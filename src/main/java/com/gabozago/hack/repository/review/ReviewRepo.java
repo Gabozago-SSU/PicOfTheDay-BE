@@ -10,6 +10,9 @@ import java.util.Optional;
 
 @Repository
 public interface ReviewRepo extends JpaRepository<Review, Long> {
-    Optional<List<Review>> findByPlaceOrderByIdDesc(Place place);
+    Optional<List<Review>> findByPlaceOrderByCreatedAtDesc(Place place);
     Optional<List<Review>> findByPlaceOrderByLikeCntDesc(Place place);
+
+    Optional<List<Review>> findByPlace(Place place);
+
 }

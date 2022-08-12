@@ -13,17 +13,17 @@ public class PlaceDto {
     private String name;
     private String address;
     private Long rate;
-    private String phone_number;
+    private String phoneNumber;
     private String category;
     private List<PlaceImage> images = new ArrayList<>();
 
     @Builder
-    public PlaceDto(String name, String address, Long rate, String phone_number,
+    public PlaceDto(String name, String address, Long rate, String phoneNumber,
                          String category, List<PlaceImage> images){
         this.name = name;
         this.address = address;
         this.rate = rate;
-        this.phone_number = phone_number;
+        this.phoneNumber = phoneNumber;
         this.category = category;
         this.images = images;
     }

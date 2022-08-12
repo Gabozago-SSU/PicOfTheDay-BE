@@ -10,4 +10,6 @@ import java.util.Optional;
 @Repository
 public interface PlaceRepo extends JpaRepository<Place, Long> {
     Optional<List<Place>> findByCategory(String category);
+
+    Optional<Place> findByName(String name);
 }

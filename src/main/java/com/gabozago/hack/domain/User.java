@@ -22,10 +22,10 @@ public class User {
     private String name;
 
     @OneToMany(mappedBy = "user")
-    private List<PlaceLike> place_likes = new ArrayList<>();
+    private List<PlaceLike> placeLikes = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
-    private List<ReviewLike> review_likes = new ArrayList<>();
+    private List<ReviewLike> reviewLikes = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
     private List<Review> reviews = new ArrayList<>();

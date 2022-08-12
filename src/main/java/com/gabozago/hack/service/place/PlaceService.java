@@ -42,7 +42,7 @@ public class PlaceService {
                 .name(place.getName())
                 .address(place.getAddress())
                 .rate(place.getRate())
-                .phone_number(place.getPhone_number())
+                .phoneNumber(place.getPhoneNumber())
                 .category(place.getCategory())
                 .images(place.getImages())
                 .build();
@@ -97,9 +97,9 @@ public class PlaceService {
 
         for (Review review : reviews){
             PlaceReviewDto reviewDto = PlaceReviewDto.builder()
-                    .user_id(review.getUser().getId())
-                    .user_name(review.getUser().getName())
-                    .updated_at(review.getUpdated_at())
+                    .userId(review.getUser().getId())
+                    .userName(review.getUser().getName())
+                    .createdAt(review.getCreatedAt())
                     .likeCnt(review.getLikeCnt())
                     .build();
 
@@ -115,16 +115,16 @@ public class PlaceService {
     public List<PlaceReviewDto> getRecentReview(Long place_id) {
         Place place = placeRepo.findById(place_id)
                 .orElseThrow(() -> new IllegalStateException("그런 장소 없음"));
-        List<Review> reviews = reviewRepo.findByPlaceOrderByIdDesc(place)
+        List<Review> reviews = reviewRepo.findByPlaceOrderByCreatedAtDesc(place)
                 .orElseThrow(()-> new IllegalStateException("그런 리뷰 없음"));
         List<PlaceReviewDto> reviewDtos = new ArrayList<>();
 
 
         for (Review review : reviews){
             PlaceReviewDto reviewDto = PlaceReviewDto.builder()
-                    .user_id(review.getUser().getId())
-                    .user_name(review.getUser().getName())
-                    .updated_at(review.getUpdated_at())
+                    .userId(review.getUser().getId())
+                    .userName(review.getUser().getName())
+                    .createdAt(review.getCreatedAt())
                     .likeCnt(review.getLikeCnt())
                     .build();
 

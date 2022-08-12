@@ -21,6 +21,8 @@ public class Review extends BaseEntity {
 
     private Long likeCnt;
 
+    private String image;
+
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private User user;
 
@@ -28,11 +30,11 @@ public class Review extends BaseEntity {
     private Place place;
 
     @OneToMany(mappedBy = "review")
-    private List<ReviewLike> review_likes = new ArrayList<>();
+    private List<ReviewLike> reviewLikes = new ArrayList<>();
 
     //==생성메소드==//
     public void postReview(Place place){
         this.place = place;
-        place.getPlace_reviews().add(this);
+        place.getPlaceReviews().add(this);
     }
 }

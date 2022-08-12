@@ -25,7 +25,7 @@ public class PlaceLike {
     public void setPlaceLike(Place place, User user){
         this.place = place;
         this.user = user;
-        place.getPlace_likes().add(this);
-        user.getPlace_likes().add(this);
+        place.getPlaceLikes().add(this);
+        user.getPlaceLikes().add(this);
     }
 }

@@ -21,7 +21,7 @@ public class Place {
     private String address;
     private Long rate;
     private String category;
-    private String phone_number;
+    private String phoneNumber;
 
     @OneToMany(mappedBy = "place")
     private List<PlaceImage> images  = new ArrayList<>();
@@ -30,10 +30,10 @@ public class Place {
     private Curation curation;
 
     @OneToMany(mappedBy = "place")
-    private List<PlaceLike> place_likes = new ArrayList<>();
+    private List<PlaceLike> placeLikes = new ArrayList<>();
 
     @OneToMany(mappedBy = "place")
-    private List<Review> place_reviews = new ArrayList<>();
+    private List<Review> placeReviews = new ArrayList<>();
 
     //==생성메소드==//
     public void setPlaceImage(PlaceImage placeImage){

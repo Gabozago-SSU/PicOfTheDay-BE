@@ -26,8 +26,8 @@ public class ReviewLike {
     public void setReviewLike(Review review, User user){
         this.review = review;
         this.user = user;
-        review.getReview_likes().add(this);
-        user.getReview_likes().add(this);
+        review.getReviewLikes().add(this);
+        user.getReviewLikes().add(this);
         review.setLikeCnt(review.getLikeCnt() + 1);
     }
 }
