@@ -1,5 +1,6 @@
-package com.gabozago.hack.domain.place;
+package com.gabozago.hack.domain.home;
 
+import com.gabozago.hack.domain.place.Place;
 import lombok.Data;
 
 import javax.persistence.*;

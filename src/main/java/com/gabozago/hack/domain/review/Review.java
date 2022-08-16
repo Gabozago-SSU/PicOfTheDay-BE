@@ -4,6 +4,7 @@ import com.gabozago.hack.domain.BaseEntity;
 import com.gabozago.hack.domain.User;
 import com.gabozago.hack.domain.place.Place;
 import lombok.Data;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -19,11 +20,14 @@ public class Review extends BaseEntity {
     @Column(name = "review_id")
     private Long id;
 
-    private Long likeCnt;
-
     private String image;
 
     private String content;
+
+    private Integer rate;
+
+    @ColumnDefault("0")
+    private Integer likeCnt;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private User user;

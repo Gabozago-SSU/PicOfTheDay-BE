@@ -1,6 +1,6 @@
 package com.gabozago.hack.repository.place;
 
-import com.gabozago.hack.domain.place.Curation;
+import com.gabozago.hack.domain.home.Curation;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -11,5 +11,7 @@ import java.util.Optional;
 public interface PlaceRepo extends JpaRepository<Place, Long> {
     Optional<List<Place>> findByCategory(String category);
 
+    Optional<List<Place>> findByNameContaining(String name);
+
     Optional<Place> findByName(String name);
 }

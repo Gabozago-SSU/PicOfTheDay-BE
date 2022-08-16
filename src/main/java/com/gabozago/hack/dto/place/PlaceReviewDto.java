@@ -12,13 +12,13 @@ public class PlaceReviewDto {
     private String userName;
     private Long rating;
     private LocalDateTime createdAt;
-    private Long likeCnt;
+    private Integer likeCnt;
 
     private String content;
 
     @Builder
     public PlaceReviewDto(Long userId, String userName, Long rating, LocalDateTime createdAt,
-                          Long likeCnt, String content){
+                          Integer likeCnt, String content){
         this.userId = userId;
         this.userName = userName;
         this.rating = rating;

@@ -1,10 +1,11 @@
 package com.gabozago.hack.domain.place;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.gabozago.hack.domain.home.Curation;
 import com.gabozago.hack.domain.review.Review;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +29,7 @@ public class Place {
 
     @OneToMany(mappedBy = "place")
     private List<PlaceImage> images  = new ArrayList<>();
+
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private Curation curation;

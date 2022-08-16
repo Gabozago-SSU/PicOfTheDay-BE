@@ -11,13 +11,18 @@ public class ReviewDetailDto {
     private Long rate;
     private String address;
 
+    private String image;
+
+    private String content;
     @Builder
     public ReviewDetailDto(Long userId, Long placeId , String userName, Long rate,
-                           String address){
+                           String address, String image, String content){
         this.userId = userId;
         this.placeId = placeId;
         this.userName = userName;
         this.rate = rate;
         this.address = address;
+        this.image = image;
+        this.content = content;
     }
 }

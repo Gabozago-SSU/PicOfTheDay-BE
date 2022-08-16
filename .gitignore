@@ -40,3 +40,4 @@ out/
 ### file ###
 application.properties
 aws.yml
+application-oauth.properties

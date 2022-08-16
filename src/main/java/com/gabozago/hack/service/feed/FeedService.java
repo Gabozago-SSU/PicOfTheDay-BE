@@ -2,7 +2,8 @@ package com.gabozago.hack.service.feed;
 
 import com.gabozago.hack.domain.place.Place;
 import com.gabozago.hack.domain.review.Review;
-import com.gabozago.hack.dto.feed.FeedReviewDto;
+import com.gabozago.hack.dto.feed.FeedPlaceSearchDto;
+import com.gabozago.hack.dto.place.PlaceSearchDto;
 import com.gabozago.hack.repository.place.PlaceRepo;
 import com.gabozago.hack.repository.review.ReviewRepo;
 import lombok.RequiredArgsConstructor;
@@ -24,62 +25,61 @@ public class FeedService {
     /**
      * 인기 게시물 받아오기
      */
-    public List<FeedReviewDto> getPopularReview(){
+    public List<FeedPlaceSearchDto> getPopularReview(){
         List<Review> reviews = reviewRepo.findAll(Sort.by(Sort.Direction.DESC,"likeCnt"));
-        List<FeedReviewDto> feedReviewDtos = new ArrayList<>();
+        List<FeedPlaceSearchDto> feedPlaceSearchDtos = new ArrayList<>();
 
         for (Review review : reviews){
-            FeedReviewDto feedReviewDto = FeedReviewDto.builder()
+            FeedPlaceSearchDto feedPlaceSearchDto = FeedPlaceSearchDto.builder()
                     .reviewId(review.getId())
                     .image(review.getImage())
                     .createdAt(review.getCreatedAt())
                     .build();
 
-            feedReviewDtos.add(feedReviewDto);
+            feedPlaceSearchDtos.add(feedPlaceSearchDto);
         }
 
-        return feedReviewDtos;
+        return feedPlaceSearchDtos;
     }
 
     /**
      * 최신 게시물 받아오기
      */
-    public List<FeedReviewDto> getRecentReview(){
+    public List<FeedPlaceSearchDto> getRecentReview(){
         List<Review> reviews = reviewRepo.findAll(Sort.by(Sort.Direction.DESC, "createdAt"));
-        List<FeedReviewDto> feedReviewDtos = new ArrayList<>();
+        List<FeedPlaceSearchDto> feedPlaceSearchDtos = new ArrayList<>();
         for (Review review : reviews){
-            FeedReviewDto feedReviewDto = FeedReviewDto.builder()
+            FeedPlaceSearchDto feedPlaceSearchDto = FeedPlaceSearchDto.builder()
                     .reviewId(review.getId())
                     .image(review.getImage())
                     .createdAt(review.getCreatedAt())
                     .build();
 
-            feedReviewDtos.add(feedReviewDto);
+            feedPlaceSearchDtos.add(feedPlaceSearchDto);
         }
 
-        return feedReviewDtos;
+        return feedPlaceSearchDtos;
     }
 
     /**
      * 검색 피드 리뷰만 가져오기
      */
-    public List<FeedReviewDto> getSearchFeedReview(String placeName){
-        Place place = placeRepo.findByName(placeName)
+    public List<PlaceSearchDto> getSearchFeedReview(String placeName){
+        List<Place> places = placeRepo.findByNameContaining(placeName)
                 .orElseThrow(() -> new IllegalStateException("그런 장소 없음"));
-        List<Review> reviews = reviewRepo.findByPlace(place)
-                .orElseThrow(() -> new IllegalStateException("그런 리뷰 없음"));
-        List<FeedReviewDto> reviewDtos = new ArrayList<>();
 
-        for(Review review : reviews){
-            FeedReviewDto reviewDto = FeedReviewDto.builder()
-                    .reviewId(review.getId())
-                    .image(review.getImage())
+        List<PlaceSearchDto> placeSearchDtos = new ArrayList<>();
+
+        for(Place place : places){
+            PlaceSearchDto placeSearchDto = PlaceSearchDto.builder()
+                    .placeId(place.getId())
+                    .placeName(place.getName())
                     .build();
 
-            reviewDtos.add(reviewDto);
+            placeSearchDtos.add(placeSearchDto);
         }
 
-        return reviewDtos;
+        return placeSearchDtos;
     }
 
 }
