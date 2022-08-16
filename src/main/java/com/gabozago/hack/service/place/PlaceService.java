@@ -3,12 +3,14 @@ package com.gabozago.hack.service.place;
 
 import com.gabozago.hack.domain.User;
 import com.gabozago.hack.domain.place.Place;
+import com.gabozago.hack.domain.place.PlaceImage;
 import com.gabozago.hack.domain.place.PlaceLike;
 import com.gabozago.hack.domain.review.Review;
 import com.gabozago.hack.dto.place.PlaceDto;
 import com.gabozago.hack.dto.place.PlaceLikeDto;
 import com.gabozago.hack.dto.place.PlaceReviewDto;
 import com.gabozago.hack.dto.place.PlaceSimilarDto;
+import com.gabozago.hack.repository.place.PlaceImageRepo;
 import com.gabozago.hack.repository.place.PlaceLikeRepo;
 import com.gabozago.hack.repository.place.PlaceRepo;
 import com.gabozago.hack.repository.place.UserRepo;
@@ -31,21 +33,27 @@ public class PlaceService {
     private final PlaceLikeRepo placeLikeRepo;
     private final UserRepo userRepo;
     private final ReviewRepo reviewRepo;
-
+    private final PlaceImageRepo placeImageRepo;
     /**
      * 장소 디테일
      */
     public PlaceDto getPlace(Long place_id){
         Place place = placeRepo.findById(place_id)
                 .orElseThrow(() -> new IllegalStateException("그런 장소 없음"));
+        List<PlaceImage> images = placeImageRepo.findByPlace(place);
+
         PlaceDto placeDto = PlaceDto.builder()
                 .name(place.getName())
                 .address(place.getAddress())
                 .rate(place.getRate())
                 .phoneNumber(place.getPhoneNumber())
                 .category(place.getCategory())
-                .images(place.getImages())
+                .content(place.getContent())
                 .build();
+
+        for (PlaceImage image : images) {
+            placeDto.getImages().add(image.getImage());
+        }
 
         return placeDto;
     }
@@ -101,6 +109,7 @@ public class PlaceService {
                     .userName(review.getUser().getName())
                     .createdAt(review.getCreatedAt())
                     .likeCnt(review.getLikeCnt())
+                    .content(review.getContent())
                     .build();
 
             reviewDtos.add(reviewDto);

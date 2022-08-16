@@ -23,6 +23,8 @@ public class Review extends BaseEntity {
 
     private String image;
 
+    private String content;
+
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private User user;
 
@@ -37,4 +39,6 @@ public class Review extends BaseEntity {
         this.place = place;
         place.getPlaceReviews().add(this);
     }
+
+
 }

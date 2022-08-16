@@ -4,6 +4,7 @@ import com.gabozago.hack.domain.review.Review;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +23,8 @@ public class Place {
     private Long rate;
     private String category;
     private String phoneNumber;
+
+    private String content;
 
     @OneToMany(mappedBy = "place")
     private List<PlaceImage> images  = new ArrayList<>();

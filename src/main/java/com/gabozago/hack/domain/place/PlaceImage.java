@@ -1,5 +1,6 @@
 package com.gabozago.hack.domain.place;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.gabozago.hack.domain.place.Place;
 import lombok.Data;
 
@@ -18,5 +19,6 @@ public class PlaceImage {
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private Place place;
 
+    @Column(length = 1000)
     private String image;
 }

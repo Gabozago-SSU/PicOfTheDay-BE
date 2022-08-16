@@ -14,13 +14,16 @@ public class PlaceReviewDto {
     private LocalDateTime createdAt;
     private Long likeCnt;
 
+    private String content;
+
     @Builder
     public PlaceReviewDto(Long userId, String userName, Long rating, LocalDateTime createdAt,
-                          Long likeCnt){
+                          Long likeCnt, String content){
         this.userId = userId;
         this.userName = userName;
         this.rating = rating;
         this.createdAt = createdAt;
         this.likeCnt = likeCnt;
+        this.content = content;
     }
 }
