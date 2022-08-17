@@ -82,6 +82,7 @@ public class ReviewService {
                     .userName(review.getUser().getName())
                     .reviewLikeCnt(review.getReviewLikes().size())
                     .isLike(true)
+                    .rate(review.getRate())
                     .build();
         } else {
             reviewDetailDto = ReviewDetailDto.builder()
@@ -92,6 +93,7 @@ public class ReviewService {
                     .userName(review.getUser().getName())
                     .reviewLikeCnt(review.getReviewLikes().size())
                     .isLike(false)
+                    .rate(review.getRate())
                     .build();
         }
 
