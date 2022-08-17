@@ -11,11 +11,11 @@ public class ReviewPostDto {
     private Long placeId;
     private ArrayList<String> keywords;
     private String content;
-    private Integer rate;
+    private Long rate;
     private String image;
 
     @Builder
-    public ReviewPostDto(Long userId, Long placeId, ArrayList<String> keywords, String content, Integer rate, String image){
+    public ReviewPostDto(Long userId, Long placeId, ArrayList<String> keywords, String content, Long rate, String image){
         this.userId = userId;
         this.placeId = placeId;
         this.keywords = keywords;

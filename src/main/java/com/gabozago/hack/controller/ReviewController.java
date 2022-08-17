@@ -1,10 +1,7 @@
 package com.gabozago.hack.controller;
 
 import com.gabozago.hack.dto.place.PlaceSearchDto;
-import com.gabozago.hack.dto.review.ReviewDeleteDto;
-import com.gabozago.hack.dto.review.ReviewDetailDto;
-import com.gabozago.hack.dto.review.ReviewLocationAddDto;
-import com.gabozago.hack.dto.review.ReviewPostDto;
+import com.gabozago.hack.dto.review.*;
 import com.gabozago.hack.service.review.ReviewService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,14 +15,19 @@ public class ReviewController {
     private final ReviewService reviewService;
 
     @GetMapping("")
-    public ReviewDetailDto getReviewDetail(@RequestParam(name = "reviewId") Long id) {
-        return reviewService.getReviewDetail(id);
+    public ReviewDetailDto getReviewDetail(@RequestParam(name = "reviewId") Long id,
+                                           @RequestParam(name = "userId") Long user_id) {
+        return reviewService.getReviewDetail(id, user_id);
     }
 
-    @GetMapping("/like")
-    public ResponseEntity reviewLike(@RequestParam(name = "userId") Long user_id,
-                                     @RequestParam(name = "reviewId") Long review_id){
-        return reviewService.reviewLike(user_id, review_id);
+    @PostMapping("/like")
+    public ResponseEntity reviewLike(@RequestBody ReviewLikeDto reviewLikeDto){
+        return reviewService.reviewLike(reviewLikeDto);
+    }
+
+    @DeleteMapping("/unlike")
+    public ResponseEntity reviewUnLike(@RequestBody ReviewLikeDto reviewLikeDto){
+        return reviewService.reviewUnLike(reviewLikeDto);
     }
 
     /**

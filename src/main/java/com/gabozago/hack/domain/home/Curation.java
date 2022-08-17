@@ -1,6 +1,7 @@
 package com.gabozago.hack.domain.home;
 
 import com.gabozago.hack.domain.place.Place;
+import com.gabozago.hack.domain.review.Review;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -19,6 +20,9 @@ public class Curation {
 
     private String subtitle;
 
-    @OneToMany(mappedBy = "curation")
+    @OneToMany(mappedBy = "curation",cascade = CascadeType.ALL)
     private List<Place> places = new ArrayList<>();
+
+    @OneToMany(mappedBy = "curation", cascade = CascadeType.ALL)
+    private List<Review> reviews = new ArrayList<>();
 }

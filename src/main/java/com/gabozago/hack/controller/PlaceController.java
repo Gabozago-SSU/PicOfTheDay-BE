@@ -37,13 +37,15 @@ public class PlaceController {
     }
 
     @GetMapping("/popular")
-    public List<PlaceReviewDto> getPopularReview(@RequestParam(name = "placeId") Long place_id) {
-        return placeService.getPopularReview(place_id);
+    public List<PlaceReviewDto> getPopularReview(@RequestParam(name = "placeId") Long place_id,
+                                                 @RequestParam(name = "userId") Long user_id) {
+        return placeService.getPopularReview(place_id,user_id);
     }
 
     @GetMapping("/recent")
-    public List<PlaceReviewDto> getRecentReview(@RequestParam(name = "placeId") Long place_id){
-        return placeService.getRecentReview(place_id);
+    public List<PlaceReviewDto> getRecentReview(@RequestParam(name = "placeId") Long place_id,
+                                                @RequestParam(name = "userId") Long user_id){
+        return placeService.getRecentReview(place_id, user_id);
     }
 
     @GetMapping("/similar")

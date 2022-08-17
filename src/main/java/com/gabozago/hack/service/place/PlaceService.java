@@ -6,6 +6,7 @@ import com.gabozago.hack.domain.place.Place;
 import com.gabozago.hack.domain.place.PlaceImage;
 import com.gabozago.hack.domain.place.PlaceLike;
 import com.gabozago.hack.domain.review.Review;
+import com.gabozago.hack.domain.review.ReviewLike;
 import com.gabozago.hack.dto.place.PlaceDto;
 import com.gabozago.hack.dto.place.PlaceLikeDto;
 import com.gabozago.hack.dto.place.PlaceReviewDto;
@@ -14,6 +15,7 @@ import com.gabozago.hack.repository.place.PlaceImageRepo;
 import com.gabozago.hack.repository.place.PlaceLikeRepo;
 import com.gabozago.hack.repository.place.PlaceRepo;
 import com.gabozago.hack.repository.place.UserRepo;
+import com.gabozago.hack.repository.review.ReviewLikeRepo;
 import com.gabozago.hack.repository.review.ReviewRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -29,6 +31,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PlaceService {
 
+    private final ReviewLikeRepo reviewLikeRepo;
     private final PlaceRepo placeRepo;
     private final PlaceLikeRepo placeLikeRepo;
     private final UserRepo userRepo;
@@ -95,22 +98,45 @@ public class PlaceService {
     /**
      * 인기 게시물 가져오기
      */
-    public List<PlaceReviewDto> getPopularReview(Long place_id){
+    public List<PlaceReviewDto> getPopularReview(Long place_id, Long user_id){
         Place place = placeRepo.findById(place_id)
                 .orElseThrow(() -> new IllegalStateException("그런 장소 없음"));
         List<Review> reviews = reviewRepo.findByPlaceOrderByLikeCntDesc(place)
                 .orElseThrow(()-> new IllegalStateException("그런 리뷰 없음"));
         List<PlaceReviewDto> reviewDtos = new ArrayList<>();
+        User user = userRepo.findById(user_id)
+                .orElseThrow(() -> new IllegalStateException("그런 유저 없음"));
 
 
         for (Review review : reviews){
-            PlaceReviewDto reviewDto = PlaceReviewDto.builder()
-                    .userId(review.getUser().getId())
-                    .userName(review.getUser().getName())
-                    .createdAt(review.getCreatedAt())
-                    .likeCnt(review.getLikeCnt())
-                    .content(review.getContent())
-                    .build();
+            ReviewLike reviewLike = reviewLikeRepo.findByUserAndReview(user, review)
+                    .orElseGet(() -> new ReviewLike());
+            PlaceReviewDto reviewDto;
+            if(reviewLike.getId() != null){
+                reviewDto = PlaceReviewDto.builder()
+                        .userId(review.getUser().getId())
+                        .userName(review.getUser().getName())
+                        .createdAt(review.getCreatedAt())
+                        .likeCnt(review.getReviewLikes().size())
+                        .content(review.getContent())
+                        .reviewId(review.getId())
+                        .profile(review.getUser().getProfileImage())
+                        .isLike(true)
+                        .build();
+            } else {
+                reviewDto = PlaceReviewDto.builder()
+                        .userId(review.getUser().getId())
+                        .userName(review.getUser().getName())
+                        .createdAt(review.getCreatedAt())
+                        .likeCnt(review.getReviewLikes().size())
+                        .content(review.getContent())
+                        .reviewId(review.getId())
+                        .profile(review.getUser().getProfileImage())
+                        .isLike(false)
+                        .build();
+            }
+
+
 
             reviewDtos.add(reviewDto);
         }
@@ -121,21 +147,42 @@ public class PlaceService {
     /**
      * 최근 게시물 가져오기
      */
-    public List<PlaceReviewDto> getRecentReview(Long place_id) {
+    public List<PlaceReviewDto> getRecentReview(Long place_id, Long user_id) {
         Place place = placeRepo.findById(place_id)
                 .orElseThrow(() -> new IllegalStateException("그런 장소 없음"));
         List<Review> reviews = reviewRepo.findByPlaceOrderByCreatedAtDesc(place)
                 .orElseThrow(()-> new IllegalStateException("그런 리뷰 없음"));
         List<PlaceReviewDto> reviewDtos = new ArrayList<>();
-
+        User user = userRepo.findById(user_id)
+                .orElseThrow(() -> new IllegalStateException("그런 유저 없음"));
 
         for (Review review : reviews){
-            PlaceReviewDto reviewDto = PlaceReviewDto.builder()
-                    .userId(review.getUser().getId())
-                    .userName(review.getUser().getName())
-                    .createdAt(review.getCreatedAt())
-                    .likeCnt(review.getLikeCnt())
-                    .build();
+            ReviewLike reviewLike = reviewLikeRepo.findByUserAndReview(user, review)
+                    .orElseGet(() -> new ReviewLike());
+            PlaceReviewDto reviewDto;
+            if(reviewLike.getId() != null){
+                reviewDto = PlaceReviewDto.builder()
+                        .userId(review.getUser().getId())
+                        .userName(review.getUser().getName())
+                        .createdAt(review.getCreatedAt())
+                        .likeCnt(review.getReviewLikes().size())
+                        .content(review.getContent())
+                        .reviewId(review.getId())
+                        .profile(review.getUser().getProfileImage())
+                        .isLike(true)
+                        .build();
+            } else {
+                reviewDto = PlaceReviewDto.builder()
+                        .userId(review.getUser().getId())
+                        .userName(review.getUser().getName())
+                        .createdAt(review.getCreatedAt())
+                        .likeCnt(review.getReviewLikes().size())
+                        .content(review.getContent())
+                        .reviewId(review.getId())
+                        .profile(review.getUser().getProfileImage())
+                        .isLike(false)
+                        .build();
+            }
 
             reviewDtos.add(reviewDto);
         }

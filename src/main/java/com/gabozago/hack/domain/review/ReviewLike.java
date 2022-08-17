@@ -16,11 +16,15 @@ public class ReviewLike {
     @Column(name = "review_like_id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @ManyToOne(fetch = FetchType.LAZY)
     private Review review;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @ManyToOne(fetch = FetchType.LAZY)
     private User user;
+
+    public ReviewLike(){
+        this.id = null;
+    }
 
     //==생성메소드==//
     public void setReviewLike(Review review, User user){

@@ -31,7 +31,7 @@ public class AuthController {
      */
     @GetMapping("/login/kakao")
     public void kakaoLogin(HttpServletResponse httpServletResponse) throws IOException{
-        httpServletResponse.sendRedirect("https://kauth.kakao.com/oauth/authorize?client_id=f59f1da1323e0e466c18bfdf8d2c67b2&redirect_uri=http://127.0.0.1:8080/auth/login/kakao/callback&response_type=code");
+        httpServletResponse.sendRedirect("https://kauth.kakao.com/oauth/authorize?client_id=f59f1da1323e0e466c18bfdf8d2c67b2&redirect_uri=http://13.125.213.188/auth/login/kakao/callback&response_type=code");
     }
 
     /**
@@ -53,7 +53,7 @@ public class AuthController {
     @GetMapping("/logout")
     public void logout(HttpServletResponse httpServletResponse) throws IOException{
         //카카오 로그아웃
-        httpServletResponse.sendRedirect("https://kauth.kakao.com/oauth/logout?client_id=f59f1da1323e0e466c18bfdf8d2c67b2&logout_redirect_uri=http://localhost:8080/");
+        httpServletResponse.sendRedirect("https://kauth.kakao.com/oauth/logout?client_id=f59f1da1323e0e466c18bfdf8d2c67b2&logout_redirect_uri=http://13.125.213.188/");
     }
 
     /**

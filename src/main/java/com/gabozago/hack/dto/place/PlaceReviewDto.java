@@ -16,14 +16,26 @@ public class PlaceReviewDto {
 
     private String content;
 
+    private Long reviewId;
+
+    private String profile;
+
+    private boolean isLike;
+
     @Builder
     public PlaceReviewDto(Long userId, String userName, Long rating, LocalDateTime createdAt,
-                          Integer likeCnt, String content){
+                          Integer likeCnt, String content, Long reviewId, String profile,
+                          boolean isLike){
         this.userId = userId;
+        this.isLike = isLike;
         this.userName = userName;
         this.rating = rating;
         this.createdAt = createdAt;
         this.likeCnt = likeCnt;
         this.content = content;
+        this.reviewId = reviewId;
+        this.profile = profile;
     }
+
+
 }

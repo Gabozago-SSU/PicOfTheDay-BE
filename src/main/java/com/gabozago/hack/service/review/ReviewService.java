@@ -5,10 +5,7 @@ import com.gabozago.hack.domain.place.Place;
 import com.gabozago.hack.domain.review.Review;
 import com.gabozago.hack.domain.review.ReviewLike;
 import com.gabozago.hack.dto.place.PlaceSearchDto;
-import com.gabozago.hack.dto.review.ReviewDeleteDto;
-import com.gabozago.hack.dto.review.ReviewDetailDto;
-import com.gabozago.hack.dto.review.ReviewLocationAddDto;
-import com.gabozago.hack.dto.review.ReviewPostDto;
+import com.gabozago.hack.dto.review.*;
 import com.gabozago.hack.repository.place.PlaceRepo;
 import com.gabozago.hack.repository.place.UserRepo;
 import com.gabozago.hack.repository.review.ReviewLikeRepo;
@@ -33,14 +30,11 @@ public class ReviewService {
 
     /**
      * 리뷰 좋아요
-     * @param user_id
-     * @param review_id
-     * @return ok
      */
-    public ResponseEntity reviewLike(Long user_id, Long review_id) {
-        User user = userRepo.findById(user_id)
+    public ResponseEntity reviewLike(ReviewLikeDto reviewLikeDto) {
+        User user = userRepo.findById(reviewLikeDto.getUserId())
                 .orElseThrow(() -> new IllegalStateException("그런 유저 없음"));
-        Review review = reviewRepo.findById(review_id)
+        Review review = reviewRepo.findById(reviewLikeDto.getReviewId())
                 .orElseThrow(() -> new IllegalStateException("그런 리뷰 없음"));
         ReviewLike reviewLike = new ReviewLike();
 
@@ -53,15 +47,35 @@ public class ReviewService {
     /**
      * 리뷰 디테일
      */
-    public ReviewDetailDto getReviewDetail(Long reviewId) {
+    public ReviewDetailDto getReviewDetail(Long reviewId, Long userId) {
         Review review = reviewRepo.findById(reviewId)
                 .orElseThrow(() -> new IllegalStateException("그런 리뷰 없음"));
-        ReviewDetailDto reviewDetailDto = ReviewDetailDto.builder()
-                .userId(review.getUser().getId())
-                .placeId(review.getPlace().getId())
-                .address(review.getPlace().getAddress())
-                .userName(review.getUser().getName())
-                .build();
+        User user = userRepo.findById(userId)
+                .orElseThrow(() -> new IllegalStateException("그런 유저 없음"));
+        ReviewLike reviewLike = reviewLikeRepo.findByUserAndReview(user,review)
+                .orElseGet(() -> new ReviewLike());
+        ReviewDetailDto reviewDetailDto;
+        if(reviewLike.getId() != null) {
+            reviewDetailDto = ReviewDetailDto.builder()
+                    .userId(review.getUser().getId())
+                    .profile(review.getUser().getProfileImage())
+                    .placeId(review.getPlace().getId())
+                    .address(review.getPlace().getAddress())
+                    .userName(review.getUser().getName())
+                    .reviewLikeCnt(review.getReviewLikes().size())
+                    .isLike(true)
+                    .build();
+        } else {
+            reviewDetailDto = ReviewDetailDto.builder()
+                    .userId(review.getUser().getId())
+                    .profile(review.getUser().getProfileImage())
+                    .placeId(review.getPlace().getId())
+                    .address(review.getPlace().getAddress())
+                    .userName(review.getUser().getName())
+                    .reviewLikeCnt(review.getReviewLikes().size())
+                    .isLike(false)
+                    .build();
+        }
 
         return reviewDetailDto;
     }
@@ -125,4 +139,16 @@ public class ReviewService {
     }
 
 
+    public ResponseEntity reviewUnLike(ReviewLikeDto reviewLikeDto) {
+        User user = userRepo.findById(reviewLikeDto.getUserId())
+                .orElseThrow(() -> new IllegalStateException("그런 유저 없음"));
+        Review review = reviewRepo.findById(reviewLikeDto.getReviewId())
+                .orElseThrow(() -> new IllegalStateException("그런 리뷰 없음"));
+        ReviewLike reviewLike = reviewLikeRepo.findByUserAndReview(user, review)
+                .orElseThrow(() -> new IllegalStateException("그런 좋아요 없음"));
+
+        review.setLikeCnt(review.getLikeCnt() - 1);
+        reviewLikeRepo.deleteById(reviewLike.getId());
+        return new ResponseEntity("성공", HttpStatus.OK);
+    }
 }

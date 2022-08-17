@@ -16,7 +16,7 @@ public class PlaceImage {
     @Column(name = "place_image_id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @ManyToOne(fetch = FetchType.LAZY)
     private Place place;
 
     @Column(length = 1000)

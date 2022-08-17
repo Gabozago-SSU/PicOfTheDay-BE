@@ -11,13 +11,18 @@ public class CurationPlaceDto {
     private String category;
     private Long rate;
     private Long curationId;
+    private String title;
+    private Long reviewId;
 
     @Builder
-    public CurationPlaceDto (Long placeId, String image, String category, Long rate, Long curationId){
+    public CurationPlaceDto (Long placeId, String image, String category, Long rate, Long curationId,
+                             String title, Long reviewId){
         this.placeId = placeId;
         this.image = image;
         this.category = category;
         this.rate = rate;
         this.curationId = curationId;
+        this.reviewId = reviewId;
+        this.title = title;
     }
 }

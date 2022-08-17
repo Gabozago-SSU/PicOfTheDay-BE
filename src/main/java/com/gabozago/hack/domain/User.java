@@ -26,26 +26,26 @@ public class User {
 
     private String name;
 
-    private String profile_image;
+    private String profileImage;
 
     @ColumnDefault("0")
     private Integer mileage;
 
     private String email;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<PlaceLike> placeLikes = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<ReviewLike> reviewLikes = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Review> reviews = new ArrayList<>();
 
-    public User(Long id, String name, String profile_image, String email){
+    public User(Long id, String name, String profileImage, String email){
         this.id = id;
         this.name = name;
-        this.profile_image = profile_image;
+        this.profileImage = profileImage;
         this.email = email;
     }
 
@@ -54,7 +54,7 @@ public class User {
     }
 
     public void setProfile_image(String profile_image){
-        this.profile_image = profile_image;
+        this.profileImage = profileImage;
     }
 
 }
