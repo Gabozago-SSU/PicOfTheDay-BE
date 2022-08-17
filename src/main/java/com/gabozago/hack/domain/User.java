@@ -20,7 +20,6 @@ import java.util.List;
 public class User {
 
     @Id
-    @GeneratedValue
     @Column(name = "user_id")
     private Long id;
 

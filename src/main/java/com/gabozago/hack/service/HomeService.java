@@ -45,7 +45,6 @@ public class HomeService {
 
             for(Place place : places) {
                 CurationPlaceDto placeDto = CurationPlaceDto.builder()
-                        .curationId(place.getCuration().getId())
                         .placeId(place.getId())
                         .rate(place.getRate())
                         .category(place.getCategory())
@@ -61,7 +60,6 @@ public class HomeService {
 
             for(Review review : reviews){
                 CurationPlaceDto placeDto = CurationPlaceDto.builder()
-                        .curationId(review.getCuration().getId())
                         .placeId(null)
                         .rate(review.getRate())
                         .category(null)
@@ -69,6 +67,7 @@ public class HomeService {
                         .title(null)
                         .reviewId(review.getId())
                         .build();
+
 
                 if(curationDto.getId() == review.getCuration().getId()){
                     curationDto.getPlaces().add(placeDto);

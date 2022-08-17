@@ -1,12 +1,14 @@
 package com.gabozago.hack.service.review;
 
 import com.gabozago.hack.domain.User;
+import com.gabozago.hack.domain.home.Curation;
 import com.gabozago.hack.domain.place.Place;
 import com.gabozago.hack.domain.review.Review;
 import com.gabozago.hack.domain.review.ReviewImage;
 import com.gabozago.hack.domain.review.ReviewLike;
 import com.gabozago.hack.dto.place.PlaceSearchDto;
 import com.gabozago.hack.dto.review.*;
+import com.gabozago.hack.repository.place.CurationRepo;
 import com.gabozago.hack.repository.place.PlaceRepo;
 import com.gabozago.hack.repository.place.UserRepo;
 import com.gabozago.hack.repository.review.ReviewImageRepo;
@@ -35,6 +37,7 @@ public class ReviewService {
     private final UserRepo userRepo;
     private final PlaceRepo placeRepo;
     private final ReviewImageRepo reviewImageRepo;
+    private final CurationRepo curationRepo;
 
     /**
      * 리뷰 좋아요
@@ -104,6 +107,8 @@ public class ReviewService {
         User user = userRepo.findById(reviewPostDto.getUserId())
                 .orElseThrow(() -> new IllegalStateException("그런 유저 없음"));
 
+        Curation curation = curationRepo.findById(4l)
+                .orElseThrow(() -> new IllegalStateException("없는 큐레이션"));
 
 
         Review review = new Review();
@@ -111,6 +116,7 @@ public class ReviewService {
         review.setContent(reviewPostDto.getContent());
         review.setRate(reviewPostDto.getRate());
         review.setPlace(place);
+        review.setCuration(curation);
 
         //[0] -> S3에 저장된 파일이름 [1] -> 이미지 경로
         for(MultipartFile multipartFile1 : multipartFile){
