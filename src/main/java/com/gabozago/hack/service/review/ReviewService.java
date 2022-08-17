@@ -3,30 +3,38 @@ package com.gabozago.hack.service.review;
 import com.gabozago.hack.domain.User;
 import com.gabozago.hack.domain.place.Place;
 import com.gabozago.hack.domain.review.Review;
+import com.gabozago.hack.domain.review.ReviewImage;
 import com.gabozago.hack.domain.review.ReviewLike;
 import com.gabozago.hack.dto.place.PlaceSearchDto;
 import com.gabozago.hack.dto.review.*;
 import com.gabozago.hack.repository.place.PlaceRepo;
 import com.gabozago.hack.repository.place.UserRepo;
+import com.gabozago.hack.repository.review.ReviewImageRepo;
 import com.gabozago.hack.repository.review.ReviewLikeRepo;
 import com.gabozago.hack.repository.review.ReviewRepo;
+import com.gabozago.hack.service.S3Uploader;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
 public class ReviewService {
 
+    private final S3Uploader s3Uploader;
     private final ReviewRepo reviewRepo;
     private final ReviewLikeRepo reviewLikeRepo;
     private final UserRepo userRepo;
     private final PlaceRepo placeRepo;
+    private final ReviewImageRepo reviewImageRepo;
 
     /**
      * 리뷰 좋아요
@@ -54,6 +62,8 @@ public class ReviewService {
                 .orElseThrow(() -> new IllegalStateException("그런 유저 없음"));
         ReviewLike reviewLike = reviewLikeRepo.findByUserAndReview(user,review)
                 .orElseGet(() -> new ReviewLike());
+        List<ReviewImage> images = reviewImageRepo.findByReview(review);
+
         ReviewDetailDto reviewDetailDto;
         if(reviewLike.getId() != null) {
             reviewDetailDto = ReviewDetailDto.builder()
@@ -77,27 +87,43 @@ public class ReviewService {
                     .build();
         }
 
+        for(ReviewImage image : images){
+            reviewDetailDto.getImage().add(image.getImage());
+        }
+
         return reviewDetailDto;
     }
 
     /**
      * 리뷰 저장
      */
-    public ResponseEntity postReview(ReviewPostDto reviewPostDto){
+    public ResponseEntity postReview(ReviewPostDto reviewPostDto, MultipartFile[] multipartFile) throws IOException {
         Place place = placeRepo.findById(reviewPostDto.getPlaceId())
                 .orElseThrow(() -> new IllegalStateException("그런 장소 없음"));
 
         User user = userRepo.findById(reviewPostDto.getUserId())
                 .orElseThrow(() -> new IllegalStateException("그런 유저 없음"));
 
+
+
         Review review = new Review();
         review.setUser(user);
-        review.setImage(reviewPostDto.getImage());
         review.setContent(reviewPostDto.getContent());
         review.setRate(reviewPostDto.getRate());
         review.setPlace(place);
 
+        //[0] -> S3에 저장된 파일이름 [1] -> 이미지 경로
+        for(MultipartFile multipartFile1 : multipartFile){
+            String[] values = s3Uploader.upload(multipartFile1, "review");
+            ReviewImage reviewImage = new ReviewImage();
+            reviewImage.setImages(values);
 
+            reviewImageRepo.save(reviewImage);
+
+            review.setReviewImage(reviewImage);
+        }
+
+        place.avgAddRate(reviewPostDto.getRate());
         reviewRepo.save(review);
         return new ResponseEntity(HttpStatus.OK);
     }
@@ -105,9 +131,12 @@ public class ReviewService {
     /**
      * 리뷰 삭제
      */
-    public Long deleteReview(ReviewDeleteDto reviewDeleteDto){
+    public ResponseEntity deleteReview(ReviewDeleteDto reviewDeleteDto){
+        Review review = reviewRepo.findById(reviewDeleteDto.getReviewId())
+                .orElseThrow(() -> new IllegalStateException("그런 유저 없음"));
+        review.getPlace().avgDeleteRate(review.getRate());
         reviewRepo.deleteById(reviewDeleteDto.getReviewId());
-        return reviewDeleteDto.getReviewId();
+        return new ResponseEntity("삭제", HttpStatus.OK);
     }
 
     /**

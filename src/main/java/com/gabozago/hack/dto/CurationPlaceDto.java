@@ -3,19 +3,22 @@ package com.gabozago.hack.dto;
 import lombok.Builder;
 import lombok.Data;
 
+import javax.persistence.Column;
+import java.math.BigDecimal;
+
 @Data
 public class CurationPlaceDto {
 
     private Long placeId;
     private String image;
     private String category;
-    private Long rate;
+    private BigDecimal rate;
     private Long curationId;
     private String title;
     private Long reviewId;
 
     @Builder
-    public CurationPlaceDto (Long placeId, String image, String category, Long rate, Long curationId,
+    public CurationPlaceDto (Long placeId, String image, String category, BigDecimal rate, Long curationId,
                              String title, Long reviewId){
         this.placeId = placeId;
         this.image = image;

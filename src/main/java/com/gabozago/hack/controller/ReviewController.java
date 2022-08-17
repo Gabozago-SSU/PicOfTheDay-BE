@@ -6,6 +6,9 @@ import com.gabozago.hack.service.review.ReviewService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @RestController
 @RequestMapping("/review")
@@ -34,15 +37,16 @@ public class ReviewController {
      * 리뷰 업로드
      */
     @PostMapping("")
-    public ResponseEntity postReview(@RequestBody ReviewPostDto reviewPostDto){
-        return reviewService.postReview(reviewPostDto);
+    public ResponseEntity postReview(@RequestPart(name = "reviewPost") ReviewPostDto reviewPostDto,
+                                     @RequestPart(name = "image")MultipartFile[] multipartFile) throws IOException {
+        return reviewService.postReview(reviewPostDto, multipartFile);
     }
 
     /**
      * 리뷰 삭제 요청
      */
     @DeleteMapping("")
-    public Long deleteReview(@RequestBody ReviewDeleteDto reviewDeleteDto){
+    public ResponseEntity deleteReview(@RequestBody ReviewDeleteDto reviewDeleteDto){
         return reviewService.deleteReview(reviewDeleteDto);
     }
 

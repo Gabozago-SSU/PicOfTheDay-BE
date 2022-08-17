@@ -1,7 +1,13 @@
 package com.gabozago.hack.dto.review;
 
+import com.gabozago.hack.domain.review.ReviewImage;
 import lombok.Builder;
 import lombok.Data;
+
+import javax.persistence.Column;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 public class ReviewDetailDto {
@@ -10,10 +16,11 @@ public class ReviewDetailDto {
     private String profile;
     private Long placeId;
     private String userName;
-    private Long rate;
+    @Column(precision = 2, scale = 1)
+    private BigDecimal rate;
     private String address;
 
-    private String image;
+    private List<String> image = new ArrayList<>();
 
     private String content;
 
@@ -21,8 +28,8 @@ public class ReviewDetailDto {
 
     private Integer reviewLikeCnt;
     @Builder
-    public ReviewDetailDto(Long userId, Long placeId , String userName, Long rate,
-                           String address, String image, String content, String profile,
+    public ReviewDetailDto(Long userId, Long placeId , String userName, BigDecimal rate,
+                           String address, List<ReviewImage> image, String content, String profile,
                            boolean isLike, Integer reviewLikeCnt){
         this.userId = userId;
         this.reviewLikeCnt = reviewLikeCnt;
@@ -32,7 +39,6 @@ public class ReviewDetailDto {
         this.userName = userName;
         this.rate = rate;
         this.address = address;
-        this.image = image;
         this.content = content;
     }
 }

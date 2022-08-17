@@ -8,6 +8,7 @@ import lombok.Data;
 import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,11 +22,10 @@ public class Review extends BaseEntity {
     @Column(name = "review_id")
     private Long id;
 
-    private String image;
-
     private String content;
 
-    private Long rate;
+    @Column(precision = 2, scale = 1)
+    private BigDecimal rate;
 
     @ColumnDefault("0")
     private Integer likeCnt;
@@ -36,16 +36,24 @@ public class Review extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private Place place;
 
-    @OneToMany(mappedBy = "review")
+    @OneToMany(mappedBy = "review", cascade = CascadeType.ALL)
     private List<ReviewLike> reviewLikes = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Curation curation;
 
+    @OneToMany(mappedBy = "review", cascade = CascadeType.ALL)
+    private List<ReviewImage> images = new ArrayList<>();
+
     //==생성메소드==//
     public void postReview(Place place){
         this.place = place;
         place.getPlaceReviews().add(this);
+    }
+
+    public void setReviewImage(ReviewImage reviewImage){
+        this.images.add(reviewImage);
+        reviewImage.setReview(this);
     }
 
 

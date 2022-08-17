@@ -65,7 +65,7 @@ public class HomeService {
                         .placeId(null)
                         .rate(review.getRate())
                         .category(null)
-                        .image(review.getImage())
+                        .image(review.getImages().get(0).getImage())
                         .title(null)
                         .reviewId(review.getId())
                         .build();

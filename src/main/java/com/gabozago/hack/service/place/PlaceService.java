@@ -2,19 +2,14 @@ package com.gabozago.hack.service.place;
 
 
 import com.gabozago.hack.domain.User;
-import com.gabozago.hack.domain.place.Place;
-import com.gabozago.hack.domain.place.PlaceImage;
-import com.gabozago.hack.domain.place.PlaceLike;
+import com.gabozago.hack.domain.place.*;
 import com.gabozago.hack.domain.review.Review;
 import com.gabozago.hack.domain.review.ReviewLike;
 import com.gabozago.hack.dto.place.PlaceDto;
 import com.gabozago.hack.dto.place.PlaceLikeDto;
 import com.gabozago.hack.dto.place.PlaceReviewDto;
 import com.gabozago.hack.dto.place.PlaceSimilarDto;
-import com.gabozago.hack.repository.place.PlaceImageRepo;
-import com.gabozago.hack.repository.place.PlaceLikeRepo;
-import com.gabozago.hack.repository.place.PlaceRepo;
-import com.gabozago.hack.repository.place.UserRepo;
+import com.gabozago.hack.repository.place.*;
 import com.gabozago.hack.repository.review.ReviewLikeRepo;
 import com.gabozago.hack.repository.review.ReviewRepo;
 import lombok.RequiredArgsConstructor;
@@ -37,6 +32,7 @@ public class PlaceService {
     private final UserRepo userRepo;
     private final ReviewRepo reviewRepo;
     private final PlaceImageRepo placeImageRepo;
+    private final PlaceConKeywordRepo placeConKeywordRepo;
     /**
      * 장소 디테일
      */
@@ -44,6 +40,7 @@ public class PlaceService {
         Place place = placeRepo.findById(place_id)
                 .orElseThrow(() -> new IllegalStateException("그런 장소 없음"));
         List<PlaceImage> images = placeImageRepo.findByPlace(place);
+        List<PlaceConKeyword> placeConKeywords = placeConKeywordRepo.findByPlace(place);
 
         PlaceDto placeDto = PlaceDto.builder()
                 .name(place.getName())
@@ -56,6 +53,10 @@ public class PlaceService {
 
         for (PlaceImage image : images) {
             placeDto.getImages().add(image.getImage());
+        }
+
+        for(PlaceConKeyword placeConKeyword : placeConKeywords) {
+            placeDto.getKeywords().add(placeConKeyword.getPlaceKeyword().getKeyword());
         }
 
         return placeDto;

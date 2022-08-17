@@ -32,7 +32,7 @@ public class FeedService {
         for (Review review : reviews){
             FeedPlaceSearchDto feedPlaceSearchDto = FeedPlaceSearchDto.builder()
                     .reviewId(review.getId())
-                    .image(review.getImage())
+                    .image(review.getImages())
                     .createdAt(review.getCreatedAt())
                     .build();
 
@@ -51,7 +51,7 @@ public class FeedService {
         for (Review review : reviews){
             FeedPlaceSearchDto feedPlaceSearchDto = FeedPlaceSearchDto.builder()
                     .reviewId(review.getId())
-                    .image(review.getImage())
+                    .image(review.getImages())
                     .createdAt(review.getCreatedAt())
                     .build();
 

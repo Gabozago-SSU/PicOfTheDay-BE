@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,15 +14,16 @@ public class PlaceDto {
 
     private String name;
     private String address;
-    private Long rate;
+    private BigDecimal rate;
     private String phoneNumber;
     private String category;
     
     private String content;
     private List<String> images = new ArrayList<>();
+    private List<String> keywords = new ArrayList<>();
 
     @Builder
-    public PlaceDto(String name, String address, Long rate, String phoneNumber,
+    public PlaceDto(String name, String address, BigDecimal rate, String phoneNumber,
                          String category, String content){
         this.name = name;
         this.address = address;
