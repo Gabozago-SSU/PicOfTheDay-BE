@@ -15,7 +15,7 @@ public class KakaoController {
 
     @GetMapping("/login/kakao")
     public String kakaoLogin(){
-        return "forward:/https://kauth.kakao.com/oauth/authorize?client_id=f59f1da1323e0e466c18bfdf8d2c67b2&redirect_uri=http://127.0.0.1:8080/login/oauth2/code/kakao&response_type=code";
+        return "forward:/https://kauth.kakao.com/oauth/authorize?client_id=f59f1da1323e0e466c18bfdf8d2c67b2&redirect_uri=http://13.125.213.188/login/oauth2/code/kakao&response_type=code";
     }
 
     @Autowired
