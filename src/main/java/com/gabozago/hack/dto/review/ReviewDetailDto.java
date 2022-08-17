@@ -27,6 +27,8 @@ public class ReviewDetailDto {
     private boolean isLike;
 
     private Integer reviewLikeCnt;
+
+    private  List<ReviewKeywordDto> keywords = new ArrayList<>();
     @Builder
     public ReviewDetailDto(Long userId, Long placeId , String userName, BigDecimal rate,
                            String address, List<ReviewImage> image, String content, String profile,

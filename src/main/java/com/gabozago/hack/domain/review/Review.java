@@ -1,6 +1,7 @@
 package com.gabozago.hack.domain.review;
 
 import com.gabozago.hack.domain.BaseEntity;
+import com.gabozago.hack.domain.Keyword;
 import com.gabozago.hack.domain.User;
 import com.gabozago.hack.domain.home.Curation;
 import com.gabozago.hack.domain.place.Place;
@@ -45,6 +46,9 @@ public class Review extends BaseEntity {
     @OneToMany(mappedBy = "review", cascade = CascadeType.ALL)
     private List<ReviewImage> images = new ArrayList<>();
 
+    @ManyToMany(mappedBy = "reviews")
+    private List<Keyword> keywords = new ArrayList<>();
+
     //==생성메소드==//
     public void postReview(Place place){
         this.place = place;
@@ -54,6 +58,15 @@ public class Review extends BaseEntity {
     public void setReviewImage(ReviewImage reviewImage){
         this.images.add(reviewImage);
         reviewImage.setReview(this);
+    }
+
+    public Review updateKeywordAndAddReviewInKeyword(List<Keyword> keywords){
+        this.keywords = keywords;
+        for (Keyword keyword : keywords){
+            keyword.getReviews().add(this);
+        }
+
+        return this;
     }
 
 

@@ -1,5 +1,6 @@
 package com.gabozago.hack.service.review;
 
+import com.gabozago.hack.domain.Keyword;
 import com.gabozago.hack.domain.User;
 import com.gabozago.hack.domain.home.Curation;
 import com.gabozago.hack.domain.place.Place;
@@ -8,6 +9,7 @@ import com.gabozago.hack.domain.review.ReviewImage;
 import com.gabozago.hack.domain.review.ReviewLike;
 import com.gabozago.hack.dto.place.PlaceSearchDto;
 import com.gabozago.hack.dto.review.*;
+import com.gabozago.hack.repository.KeywordRepo;
 import com.gabozago.hack.repository.place.CurationRepo;
 import com.gabozago.hack.repository.place.PlaceRepo;
 import com.gabozago.hack.repository.place.UserRepo;
@@ -25,6 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -38,6 +41,8 @@ public class ReviewService {
     private final PlaceRepo placeRepo;
     private final ReviewImageRepo reviewImageRepo;
     private final CurationRepo curationRepo;
+
+    private final KeywordRepo keywordRepo;
 
     /**
      * 리뷰 좋아요
@@ -94,6 +99,14 @@ public class ReviewService {
             reviewDetailDto.getImage().add(image.getImage());
         }
 
+        for(Keyword keyword : review.getKeywords()){
+            ReviewKeywordDto reviewKeywordDto = ReviewKeywordDto.builder()
+                    .name(keyword.getName())
+                    .build();
+
+            reviewDetailDto.getKeywords().add(reviewKeywordDto);
+        }
+
         return reviewDetailDto;
     }
 
@@ -130,7 +143,30 @@ public class ReviewService {
         }
 
         place.avgAddRate(reviewPostDto.getRate());
-        reviewRepo.save(review);
+        reviewRepo.save(review); // 일단 review id 생성
+
+        //키워드 설정
+        List<Keyword> keywordList = new ArrayList<Keyword>();
+        for(String keywordString : reviewPostDto.getKeywords()){
+            Keyword keyword;
+            if (keywordRepo.findByName(keywordString).equals(Optional.empty())){
+                keyword = new Keyword();
+                keyword.setName(keywordString);
+                keywordRepo.save(keyword);
+            }else{
+                keyword = keywordRepo.findByName(keywordString)
+                        .orElseThrow(() -> new IllegalStateException("그런 키워드 없음"));
+            }
+
+            keywordList.add(keyword);
+        }
+        // 키워드 설정 끝
+
+        Review newReview = reviewRepo.findById(review.getId())
+                .map(entity -> entity.updateKeywordAndAddReviewInKeyword(keywordList))
+                .orElse(review);
+        reviewRepo.save(newReview);
+
         return new ResponseEntity(HttpStatus.OK);
     }
 
