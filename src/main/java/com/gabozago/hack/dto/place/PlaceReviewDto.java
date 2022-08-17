@@ -1,5 +1,6 @@
 package com.gabozago.hack.dto.place;
 
+import com.gabozago.hack.dto.review.ReviewKeywordDto;
 import lombok.Builder;
 import lombok.Data;
 
@@ -24,6 +25,7 @@ public class PlaceReviewDto {
 
     private boolean isLike;
 
+    private List<ReviewKeywordDto> keywords = new ArrayList<>();
     @Builder
     public PlaceReviewDto(Long userId, String userName, Long rating, LocalDateTime createdAt,
                           Integer likeCnt, String content, Long reviewId, String profile,

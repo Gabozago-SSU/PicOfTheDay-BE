@@ -12,7 +12,7 @@ import java.util.List;
 public class FeedPlaceSearchDto {
 
     private Long reviewId;
-    private List<ReviewImage> image = new ArrayList<>();
+    private List<String> image = new ArrayList<>();
     private LocalDateTime createdAt;
 
     @Builder

@@ -37,7 +37,7 @@ public class FeedService {
                     .build();
 
             for(ReviewImage reviewImage : review.getImages()){
-                feedPlaceSearchDto.getImage().add(reviewImage);
+                feedPlaceSearchDto.getImage().add(reviewImage.getImage());
             }
 
             feedPlaceSearchDtos.add(feedPlaceSearchDto);
@@ -60,7 +60,7 @@ public class FeedService {
 
 
             for(ReviewImage reviewImage : review.getImages()){
-                feedPlaceSearchDto.getImage().add(reviewImage);
+                feedPlaceSearchDto.getImage().add(reviewImage.getImage());
             }
 
             feedPlaceSearchDtos.add(feedPlaceSearchDto);

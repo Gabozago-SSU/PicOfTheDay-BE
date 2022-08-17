@@ -1,6 +1,7 @@
 package com.gabozago.hack.service.place;
 
 
+import com.gabozago.hack.domain.Keyword;
 import com.gabozago.hack.domain.User;
 import com.gabozago.hack.domain.place.*;
 import com.gabozago.hack.domain.review.Review;
@@ -9,6 +10,7 @@ import com.gabozago.hack.dto.place.PlaceDto;
 import com.gabozago.hack.dto.place.PlaceLikeDto;
 import com.gabozago.hack.dto.place.PlaceReviewDto;
 import com.gabozago.hack.dto.place.PlaceSimilarDto;
+import com.gabozago.hack.dto.review.ReviewKeywordDto;
 import com.gabozago.hack.repository.place.*;
 import com.gabozago.hack.repository.review.ReviewLikeRepo;
 import com.gabozago.hack.repository.review.ReviewRepo;
@@ -137,6 +139,13 @@ public class PlaceService {
                         .build();
             }
 
+            for(Keyword keyword : review.getKeywords()){
+                ReviewKeywordDto reviewKeywordDto = ReviewKeywordDto.builder()
+                        .name(keyword.getName())
+                        .build();
+
+                reviewDto.getKeywords().add(reviewKeywordDto);
+            }
 
 
             reviewDtos.add(reviewDto);
@@ -183,6 +192,14 @@ public class PlaceService {
                         .profile(review.getUser().getProfileImage())
                         .isLike(false)
                         .build();
+            }
+
+            for(Keyword keyword : review.getKeywords()){
+                ReviewKeywordDto reviewKeywordDto = ReviewKeywordDto.builder()
+                        .name(keyword.getName())
+                        .build();
+
+                reviewDto.getKeywords().add(reviewKeywordDto);
             }
 
             reviewDtos.add(reviewDto);
