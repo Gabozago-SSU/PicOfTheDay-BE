@@ -2,6 +2,7 @@ package com.gabozago.hack.service.feed;
 
 import com.gabozago.hack.domain.place.Place;
 import com.gabozago.hack.domain.review.Review;
+import com.gabozago.hack.domain.review.ReviewImage;
 import com.gabozago.hack.dto.feed.FeedPlaceSearchDto;
 import com.gabozago.hack.dto.place.PlaceSearchDto;
 import com.gabozago.hack.repository.place.PlaceRepo;
@@ -32,9 +33,12 @@ public class FeedService {
         for (Review review : reviews){
             FeedPlaceSearchDto feedPlaceSearchDto = FeedPlaceSearchDto.builder()
                     .reviewId(review.getId())
-                    .image(review.getImages())
                     .createdAt(review.getCreatedAt())
                     .build();
+
+            for(ReviewImage reviewImage : review.getImages()){
+                feedPlaceSearchDto.getImage().add(reviewImage);
+            }
 
             feedPlaceSearchDtos.add(feedPlaceSearchDto);
         }
@@ -51,9 +55,13 @@ public class FeedService {
         for (Review review : reviews){
             FeedPlaceSearchDto feedPlaceSearchDto = FeedPlaceSearchDto.builder()
                     .reviewId(review.getId())
-                    .image(review.getImages())
                     .createdAt(review.getCreatedAt())
                     .build();
+
+
+            for(ReviewImage reviewImage : review.getImages()){
+                feedPlaceSearchDto.getImage().add(reviewImage);
+            }
 
             feedPlaceSearchDtos.add(feedPlaceSearchDto);
         }
