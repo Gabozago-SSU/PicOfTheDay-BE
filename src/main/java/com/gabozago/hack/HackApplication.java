@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 @EnableJpaAuditing
 public class HackApplication {
 
-	public static final String APPLICATION_LOCATIONS = "spring.config.location="
+	public static final String APPLICATION_LOCATIONS = "spring.config.additional-location="
 			+ "classpath:application.properties";
 	public static void main(String[] args) {
 //		SpringApplication.run(HackApplication.class, args);
