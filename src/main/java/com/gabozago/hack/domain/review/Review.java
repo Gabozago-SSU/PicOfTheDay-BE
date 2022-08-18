@@ -28,8 +28,8 @@ public class Review extends BaseEntity {
     @Column(precision = 2, scale = 1)
     private BigDecimal rate;
 
-    @ColumnDefault("0")
-    private Integer likeCnt;
+//    @ColumnDefault("0")
+    private Integer likeCnt = 0;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;

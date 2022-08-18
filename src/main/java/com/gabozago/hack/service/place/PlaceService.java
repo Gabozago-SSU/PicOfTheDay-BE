@@ -38,20 +38,40 @@ public class PlaceService {
     /**
      * 장소 디테일
      */
-    public PlaceDto getPlace(Long place_id){
+    public PlaceDto getPlace(Long place_id, Long user_id){
         Place place = placeRepo.findById(place_id)
                 .orElseThrow(() -> new IllegalStateException("그런 장소 없음"));
+        User user = userRepo.findById(user_id)
+                .orElseThrow(() -> new IllegalStateException("그런 유저 없음"));
         List<PlaceImage> images = placeImageRepo.findByPlace(place);
         List<PlaceConKeyword> placeConKeywords = placeConKeywordRepo.findByPlace(place);
+        PlaceLike placeLike = placeLikeRepo.findByPlaceAndUser(place, user)
+                .orElseGet(() -> new PlaceLike(null));
 
-        PlaceDto placeDto = PlaceDto.builder()
-                .name(place.getName())
-                .address(place.getAddress())
-                .rate(place.getRate())
-                .phoneNumber(place.getPhoneNumber())
-                .category(place.getCategory())
-                .content(place.getContent())
-                .build();
+        PlaceDto placeDto;
+
+        if(placeLike.getId() == null){
+            placeDto = PlaceDto.builder()
+                    .name(place.getName())
+                    .address(place.getAddress())
+                    .rate(place.getRate())
+                    .phoneNumber(place.getPhoneNumber())
+                    .category(place.getCategory())
+                    .content(place.getContent())
+                    .isLike(false)
+                    .build();
+        } else {
+            placeDto = PlaceDto.builder()
+                    .name(place.getName())
+                    .address(place.getAddress())
+                    .rate(place.getRate())
+                    .phoneNumber(place.getPhoneNumber())
+                    .category(place.getCategory())
+                    .content(place.getContent())
+                    .isLike(true)
+                    .build();
+        }
+
 
         for (PlaceImage image : images) {
             placeDto.getImages().add(image.getImage());

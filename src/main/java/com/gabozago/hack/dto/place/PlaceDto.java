@@ -17,20 +17,22 @@ public class PlaceDto {
     private BigDecimal rate;
     private String phoneNumber;
     private String category;
-    
+
+    private boolean isLike;
     private String content;
     private List<String> images = new ArrayList<>();
     private List<String> keywords = new ArrayList<>();
 
     @Builder
     public PlaceDto(String name, String address, BigDecimal rate, String phoneNumber,
-                         String category, String content){
+                         String category, String content, boolean isLike){
         this.name = name;
         this.address = address;
         this.rate = rate;
         this.phoneNumber = phoneNumber;
         this.category = category;
         this.content = content;
+        this.isLike = isLike;
     }
 
 

@@ -1,7 +1,8 @@
 package com.gabozago.hack.service;
 
 import com.gabozago.hack.domain.User;
-import com.gabozago.hack.dto.UserDto;
+import com.gabozago.hack.dto.user.UserNicknameDto;
+import com.gabozago.hack.dto.user.UserProfileImageDto;
 import com.gabozago.hack.repository.place.UserRepo;
 import lombok.RequiredArgsConstructor;
 
@@ -14,6 +15,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -120,8 +125,8 @@ public class AuthService {
 
         String[] value = s3Uploader.upload(multipartFile, "user");
         user.setProfileImage(value[1]); // 이미지 url 저장?
+
         userRepository.save(user);
 
         return new ResponseEntity(HttpStatus.OK);
     }
-}

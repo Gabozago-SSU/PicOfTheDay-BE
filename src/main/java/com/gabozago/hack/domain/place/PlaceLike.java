@@ -21,11 +21,20 @@ public class PlaceLike {
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 
+
     //==생성메소드==//
     public void setPlaceLike(Place place, User user){
         this.place = place;
         this.user = user;
         place.getPlaceLikes().add(this);
         user.getPlaceLikes().add(this);
+    }
+
+    public PlaceLike() {
+
+    }
+
+    public PlaceLike(Long id){
+        this.id = id;
     }
 }
