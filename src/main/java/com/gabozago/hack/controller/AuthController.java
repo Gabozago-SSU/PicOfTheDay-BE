@@ -1,6 +1,7 @@
 package com.gabozago.hack.controller;
 
-import com.gabozago.hack.dto.UserDto;
+import com.gabozago.hack.dto.user.UserNicknameDto;
+import com.gabozago.hack.dto.user.UserProfileImageDto;
 import com.gabozago.hack.service.AuthService;
 import com.gabozago.hack.service.KakaoService;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -29,15 +31,15 @@ public class AuthController {
     /**
      * 카카오 로그인 요청
      */
-    @GetMapping("/login/kakao")
+    @GetMapping("/kakao")
     public void kakaoLogin(HttpServletResponse httpServletResponse) throws IOException{
-        httpServletResponse.sendRedirect("https://kauth.kakao.com/oauth/authorize?client_id=f59f1da1323e0e466c18bfdf8d2c67b2&redirect_uri=http://13.125.213.188/auth/login/kakao/callback&response_type=code");
+        httpServletResponse.sendRedirect("https://kauth.kakao.com/oauth/authorize?client_id=f59f1da1323e0e466c18bfdf8d2c67b2&redirect_uri=http://13.125.213.188/auth/kakao/callback&response_type=code");
     }
 
     /**
      * 카카오 로그인 이후 콜백
      */
-    @GetMapping("/login/kakao/callback")
+    @GetMapping("/kakao/callback")
     public String kakaoCallback(@RequestParam String code, Model model) throws IOException {
         String access_token = kakaoService.getToken(code);
         Map<String, Object> userInfo = kakaoService.getUserInfo(access_token);
@@ -49,6 +51,7 @@ public class AuthController {
 
     /**
      * 로그아웃 - logout redirect url은 홈으로 설정해놓음. 바꿀거면 말해주기. 카카오 developments 사이트에서 바꿔야함
+     * 로그아웃 기능을 만들지 않은 것 같아 구글 로그아웃은 따로 구현 안함
      */
     @GetMapping("/logout")
     public void logout(HttpServletResponse httpServletResponse) throws IOException{
@@ -60,21 +63,17 @@ public class AuthController {
      * 닉네임 수정 요청
      */
     @PostMapping("/nickname")
-    public ResponseEntity setNickname(@RequestBody UserDto userDto){
-        return authService.setNickname(userDto);
+    public ResponseEntity setNickname(@RequestBody UserNicknameDto userNicknameDto){
+        return authService.setNickname(userNicknameDto);
     }
 
     /**
-     * 로그인 페이지 매핑 - 내가 그냥 테스트용 html 넘어가기 용
-     * @return
+     * 프로필 사진 수정 요청
      */
-    @GetMapping("/login")
-    public String loginPageRedirect(){
-        return "login_form";
+    @PostMapping("/profileimage")
+    public ResponseEntity setProfileImage(@RequestPart(name="profileImagePost") UserProfileImageDto userProfileImageDto,
+                                          @RequestPart(name="image")MultipartFile multipartFile) throws IOException{
+        return authService.setProfileImage(userProfileImageDto, multipartFile);
     }
-
-
-
-
 
 }
