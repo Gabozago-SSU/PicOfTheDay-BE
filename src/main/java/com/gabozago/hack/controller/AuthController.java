@@ -5,7 +5,9 @@ import com.gabozago.hack.dto.user.UserProfileImageDto;
 import com.gabozago.hack.service.AuthService;
 import com.gabozago.hack.service.KakaoService;
 import lombok.RequiredArgsConstructor;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,6 +22,8 @@ import java.util.Map;
 @RequiredArgsConstructor
 @RequestMapping("/auth")
 public class AuthController {
+
+
     @Autowired
     private KakaoService kakaoService;
 
@@ -40,23 +44,40 @@ public class AuthController {
      * 카카오 로그인 이후 콜백
      */
     @GetMapping("/kakao/callback")
+    @ResponseBody
     public String kakaoCallback(@RequestParam String code, Model model) throws IOException {
         String access_token = kakaoService.getToken(code);
         Map<String, Object> userInfo = kakaoService.getUserInfo(access_token);
         kakaoService.kakaoSignup(userInfo);
-        model.addAttribute("userId", userInfo.get("id"));
 
-        return "kakaoResponse"; // 프론트에서 닉네임 설정하는 곳으로 보내기
+        JSONObject json = new JSONObject();
+        json.put("userId", userInfo.get("id"));
+
+        return json.toString();
+    }
+
+    /**
+     * 구글 콜백
+     */
+    @GetMapping("/google/callback")
+    @ResponseBody
+    public String googleCallback(@RequestParam(name="code") String code, Model model) throws IOException{
+        Long userId = authService.getUserIdByCode(code);
+        JSONObject json = new JSONObject();
+        json.put("userId", userId);
+
+        return json.toString();
     }
 
     /**
      * 로그아웃 - logout redirect url은 홈으로 설정해놓음. 바꿀거면 말해주기. 카카오 developments 사이트에서 바꿔야함
-     * 로그아웃 기능을 만들지 않은 것 같아 구글 로그아웃은 따로 구현 안함
+     *
      */
     @GetMapping("/logout")
-    public void logout(HttpServletResponse httpServletResponse) throws IOException{
-        //카카오 로그아웃
-        httpServletResponse.sendRedirect("https://kauth.kakao.com/oauth/logout?client_id=f59f1da1323e0e466c18bfdf8d2c67b2&logout_redirect_uri=http://13.125.213.188/");
+    public void logout(@RequestParam(name="userId") String userId, HttpServletResponse httpServletResponse) throws IOException{
+        String logoutUrl = authService.logout(userId);
+
+        httpServletResponse.sendRedirect(logoutUrl);
     }
 
     /**
@@ -75,5 +96,6 @@ public class AuthController {
                                           @RequestPart(name="image")MultipartFile multipartFile) throws IOException{
         return authService.setProfileImage(userProfileImageDto, multipartFile);
     }
+
 
 }
