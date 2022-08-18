@@ -38,5 +38,3 @@ out/
 .vscode/
 
 ### file ###
-application.properties
-application-oauth.properties
