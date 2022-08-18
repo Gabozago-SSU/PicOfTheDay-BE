@@ -22,8 +22,9 @@ public class PlaceController {
      * 장소 디테일
      */
     @GetMapping("")
-    public PlaceDto getPlace(@RequestParam(name = "placeId") Long place_id) {
-        return placeService.getPlace(place_id);
+    public PlaceDto getPlace(@RequestParam(name = "placeId") Long place_id,
+                             @RequestParam(name = "userId") Long user_id) {
+        return placeService.getPlace(place_id, user_id);
     }
 
     @PostMapping("/like")
