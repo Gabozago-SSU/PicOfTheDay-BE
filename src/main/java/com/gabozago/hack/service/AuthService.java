@@ -21,12 +21,16 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
-
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+import java.io.IOException;
 @Service
 @RequiredArgsConstructor
+@Transactional
 @PropertySource("classpath:application-oauth.properties")
 public class AuthService {
     private final UserRepo userRepository;
+    private final S3Uploader s3Uploader;
 
     @Value("${GOOGLE_SNS_BASE_URL}")
     private String GOOGLE_SNS_BASE_URL;
@@ -43,11 +47,11 @@ public class AuthService {
     @Value("${GOOGLE_SNS_TOKEN_BASE_URL}")
     private String GOOGLE_SNS_TOKEN_BASE_URL;
 
-    public ResponseEntity setNickname(UserDto userDto){
-        User user = userRepository.findById(userDto.getUserId())
+    public ResponseEntity setNickname(UserNicknameDto userNicknameDto){
+        User user = userRepository.findById(userNicknameDto.getUserId())
                 .orElseThrow(() -> new IllegalStateException("그런 유저 없음"));
 
-        user.setName(userDto.getNickname());
+        user.setName(userNicknameDto.getNickname());
         userRepository.save(user);
         return new ResponseEntity(HttpStatus.OK);
     }
@@ -107,5 +111,17 @@ public class AuthService {
                 .orElseThrow(() -> new IllegalStateException("그런 유저 없음"));
 
         return user.getId();
+    }
+
+    public ResponseEntity setProfileImage(UserProfileImageDto userProfileImageDto, MultipartFile multipartFile) throws IOException {
+
+        User user = userRepository.findById(userProfileImageDto.getUserId())
+                .orElseThrow(() -> new IllegalStateException("그런 유저 없음"));
+
+        String[] value = s3Uploader.upload(multipartFile, "user");
+        user.setProfileImage(value[1]); // 이미지 url 저장?
+        userRepository.save(user);
+
+        return new ResponseEntity(HttpStatus.OK);
     }
 }
