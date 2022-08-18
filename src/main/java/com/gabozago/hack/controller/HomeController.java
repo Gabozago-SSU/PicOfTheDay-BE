@@ -2,8 +2,11 @@ package com.gabozago.hack.controller;
 
 import com.gabozago.hack.domain.home.Banner;
 import com.gabozago.hack.domain.home.Curation;
+import com.gabozago.hack.domain.place.PlaceKeyword;
 import com.gabozago.hack.dto.CurationDto;
+import com.gabozago.hack.dto.KeywordDto;
 import com.gabozago.hack.dto.feed.FeedPlaceSearchDto;
+import com.gabozago.hack.dto.place.PlaceKeywordDto;
 import com.gabozago.hack.dto.place.PlaceSearchDto;
 import com.gabozago.hack.service.HomeService;
 import com.gabozago.hack.service.feed.FeedService;
@@ -32,6 +35,11 @@ public class HomeController {
     @GetMapping("/search")
     public List<PlaceSearchDto> getFeedSearchReview(@RequestParam(name = "search") String search){
         return feedService.getSearchFeedReview(search);
+    }
+
+    @GetMapping("/search/keyword")
+    public List<PlaceKeywordDto> getContainKeyword(@RequestParam(name = "keyword") String keyword){
+        return homeService.getContainKeyword(keyword);
     }
 
 }

@@ -3,14 +3,19 @@ package com.gabozago.hack.service;
 import com.gabozago.hack.domain.home.Banner;
 import com.gabozago.hack.domain.home.Curation;
 import com.gabozago.hack.domain.place.Place;
+import com.gabozago.hack.domain.place.PlaceKeyword;
 import com.gabozago.hack.domain.review.Review;
 import com.gabozago.hack.dto.CurationDto;
 import com.gabozago.hack.dto.CurationPlaceDto;
+import com.gabozago.hack.dto.KeywordDto;
+import com.gabozago.hack.dto.place.PlaceKeywordDto;
 import com.gabozago.hack.repository.BannerRepository;
 import com.gabozago.hack.repository.place.CurationRepo;
+import com.gabozago.hack.repository.place.PlaceKeywordRepo;
 import com.gabozago.hack.repository.place.PlaceRepo;
 import com.gabozago.hack.repository.review.ReviewRepo;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +30,7 @@ public class HomeService {
     private final CurationRepo curationRepository;
     private final PlaceRepo placeRepo;
     private final ReviewRepo reviewRepo;
+    private final PlaceKeywordRepo placeKeywordRepo;
 
     public List<Banner> getBanner(){
         return bannerRepository.findAll();
@@ -81,4 +87,27 @@ public class HomeService {
 
 
     }
+
+    public List<PlaceKeywordDto> getContainKeyword(String keyword){
+        List<PlaceKeyword> keywords = placeKeywordRepo.findByKeywordContaining(keyword)
+                .orElseThrow(() -> new IllegalStateException("키워드 없음"));
+        List<PlaceKeywordDto> placeKeywordDtos = new ArrayList<>();
+
+        for(PlaceKeyword placeKeyword : keywords){
+            PlaceKeywordDto placeKeywordDto = PlaceKeywordDto.builder()
+                    .keywordId(placeKeyword.getId())
+                    .keyword(placeKeyword.getKeyword())
+                    .build();
+
+            placeKeywordDtos.add(placeKeywordDto);
+        }
+
+        return placeKeywordDtos;
+
+    }
+
+
+//    public ResponseEntity sendKeyword(String keyword) {
+//        List<Place> places = placeRepo.findb
+//    }
 }
