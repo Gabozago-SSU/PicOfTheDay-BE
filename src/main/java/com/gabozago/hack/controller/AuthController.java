@@ -5,6 +5,7 @@ import com.gabozago.hack.service.AuthService;
 import com.gabozago.hack.service.KakaoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,6 +19,8 @@ import java.util.Map;
 @RequiredArgsConstructor
 @RequestMapping("/auth")
 public class AuthController {
+
+
     @Autowired
     private KakaoService kakaoService;
 
@@ -44,7 +47,19 @@ public class AuthController {
         kakaoService.kakaoSignup(userInfo);
         model.addAttribute("userId", userInfo.get("id"));
 
-        return "kakaoResponse"; // 프론트에서 닉네임 설정하는 곳으로 보내기
+        return "리다이렉트할 주소"; // 프론트에서 닉네임 설정하는 곳으로 보내기
+    }
+
+    /**
+     * 구글 콜백
+     */
+    @GetMapping("/google/callback")
+    @ResponseBody
+    public String googleCallback(@RequestParam(name="code") String code, Model model) throws IOException{
+        Long userId = authService.getUserIdByCode(code);
+        model.addAttribute("userId", userId);
+
+        return "리다이렉트할 주소";
     }
 
     /**
@@ -64,6 +79,7 @@ public class AuthController {
     public ResponseEntity setNickname(@RequestBody UserDto userDto){
         return authService.setNickname(userDto);
     }
+
 
 
 }
