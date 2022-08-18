@@ -1,0 +1,11 @@
+cloud:
+  aws:
+    credentials:
+      accessKey: AKIAW22J33FRUTA3P3HB
+      secretKey: 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
+    S3:
+      bucket: gabozago-bucket
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false
