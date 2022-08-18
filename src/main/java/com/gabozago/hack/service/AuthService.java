@@ -1,5 +1,6 @@
 package com.gabozago.hack.service;
 
+import com.gabozago.hack.domain.Provider;
 import com.gabozago.hack.domain.User;
 import com.gabozago.hack.dto.user.UserNicknameDto;
 import com.gabozago.hack.dto.user.UserProfileImageDto;
@@ -28,6 +29,8 @@ import java.util.HashMap;
 import java.util.Map;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 @Service
 @RequiredArgsConstructor
@@ -129,5 +132,20 @@ public class AuthService {
         userRepository.save(user);
 
         return new ResponseEntity(HttpStatus.OK);
+    }
+
+    public String logout(String userId) throws IOException{
+        User user = userRepository.findById(Long.parseLong(userId))
+                .orElseThrow(() -> new IllegalStateException("그런 유저 없음"));
+
+        String logoutUrl;
+        if(user.getProvider() == Provider.GOOGLE){
+            logoutUrl = "http://13.125.213.188/logout";
+        }else{
+            logoutUrl = "https://kauth.kakao.com/oauth/logout?client_id=f59f1da1323e0e466c18bfdf8d2c67b2&logout_redirect_uri=http://13.125.213.188/";
+        }
+
+        return logoutUrl;
+
     }
 }

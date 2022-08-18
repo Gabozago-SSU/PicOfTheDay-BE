@@ -71,12 +71,13 @@ public class AuthController {
 
     /**
      * 로그아웃 - logout redirect url은 홈으로 설정해놓음. 바꿀거면 말해주기. 카카오 developments 사이트에서 바꿔야함
-     * 로그아웃 기능을 만들지 않은 것 같아 구글 로그아웃은 따로 구현 안함
+     *
      */
     @GetMapping("/logout")
-    public void logout(HttpServletResponse httpServletResponse) throws IOException{
-        //카카오 로그아웃
-        httpServletResponse.sendRedirect("https://kauth.kakao.com/oauth/logout?client_id=f59f1da1323e0e466c18bfdf8d2c67b2&logout_redirect_uri=http://13.125.213.188/");
+    public void logout(@RequestParam(name="userId") String userId, HttpServletResponse httpServletResponse) throws IOException{
+        String logoutUrl = authService.logout(userId);
+
+        httpServletResponse.sendRedirect(logoutUrl);
     }
 
     /**

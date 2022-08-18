@@ -8,10 +8,7 @@ import com.gabozago.hack.dto.place.PlaceSearchDto;
 import com.gabozago.hack.service.HomeService;
 import com.gabozago.hack.service.feed.FeedService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -36,6 +33,5 @@ public class HomeController {
     public List<PlaceSearchDto> getFeedSearchReview(@RequestParam(name = "search") String search){
         return feedService.getSearchFeedReview(search);
     }
-
 
 }
