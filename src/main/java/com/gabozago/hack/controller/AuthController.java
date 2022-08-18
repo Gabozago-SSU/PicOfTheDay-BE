@@ -1,6 +1,7 @@
 package com.gabozago.hack.controller;
 
-import com.gabozago.hack.dto.UserDto;
+import com.gabozago.hack.dto.user.UserNicknameDto;
+import com.gabozago.hack.dto.user.UserProfileImageDto;
 import com.gabozago.hack.service.AuthService;
 import com.gabozago.hack.service.KakaoService;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -61,9 +63,17 @@ public class AuthController {
      * 닉네임 수정 요청
      */
     @PostMapping("/nickname")
-    public ResponseEntity setNickname(@RequestBody UserDto userDto){
-        return authService.setNickname(userDto);
+    public ResponseEntity setNickname(@RequestBody UserNicknameDto userNicknameDto){
+        return authService.setNickname(userNicknameDto);
     }
 
+    /**
+     * 프로필 사진 수정 요청
+     */
+    @PostMapping("/profileimage")
+    public ResponseEntity setProfileImage(@RequestPart(name="profileImagePost") UserProfileImageDto userProfileImageDto,
+                                          @RequestPart(name="image")MultipartFile multipartFile) throws IOException{
+        return authService.setProfileImage(userProfileImageDto, multipartFile);
+    }
 
 }

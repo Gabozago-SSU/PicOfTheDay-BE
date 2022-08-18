@@ -1,15 +1,15 @@
-package com.gabozago.hack.dto;
+package com.gabozago.hack.dto.user;
 
 import lombok.Builder;
 import lombok.Data;
 
 @Data
-public class UserDto {
+public class UserNicknameDto {
     private Long userId;
     private String nickname;
 
     @Builder
-    public UserDto(Long userId, String nickname){
+    public UserNicknameDto(Long userId, String nickname){
         this.userId = userId;
         this.nickname = nickname;
     }
