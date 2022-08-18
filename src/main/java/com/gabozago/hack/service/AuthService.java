@@ -52,7 +52,7 @@ public class AuthService {
     @Value("${GOOGLE_SNS_TOKEN_BASE_URL}")
     private String GOOGLE_SNS_TOKEN_BASE_URL;
 
-    public ResponseEntity setNickname(UserNicknameDto userNicknameDto){
+    public ResponseEntity setNickname(UserNicknameDto userNicknameDto) {
         User user = userRepository.findById(userNicknameDto.getUserId())
                 .orElseThrow(() -> new IllegalStateException("그런 유저 없음"));
 
@@ -61,7 +61,7 @@ public class AuthService {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    public String requestAccessToken(String code){
+    public String requestAccessToken(String code) {
         RestTemplate restTemplate = new RestTemplate();
 
         Map<String, Object> params = new HashMap<>();
@@ -73,7 +73,7 @@ public class AuthService {
 
         ResponseEntity<String> responseEntity = restTemplate.postForEntity(GOOGLE_SNS_TOKEN_BASE_URL, params, String.class);
 
-        if(responseEntity.getStatusCode() != HttpStatus.OK){
+        if (responseEntity.getStatusCode() != HttpStatus.OK) {
             return "구글 로그인 요청 실패";
         }
 
@@ -82,7 +82,7 @@ public class AuthService {
         return access_token;
     }
 
-    public String getGoogleSnsId(String code){
+    public String getGoogleSnsId(String code) {
         String access_token = requestAccessToken(code);
         try {
             URL url = new URL("https://www.googleapis.com/oauth2/v2/userinfo?access_token=" + access_token);
@@ -96,7 +96,7 @@ public class AuthService {
             StringBuilder sb = new StringBuilder();
             String line = null;
 
-            while((line = br.readLine()) != null){
+            while ((line = br.readLine()) != null) {
                 sb.append(line);
             }
 
@@ -105,12 +105,12 @@ public class AuthService {
 
             return snsId;
 
-        }catch(Exception e){
+        } catch (Exception e) {
             return "";
         }
     }
 
-    public Long getUserIdByCode(String code){
+    public Long getUserIdByCode(String code) {
         String snsId = getGoogleSnsId(code);
         User user = userRepository.findBySnsId(snsId)
                 .orElseThrow(() -> new IllegalStateException("그런 유저 없음"));
@@ -130,3 +130,4 @@ public class AuthService {
 
         return new ResponseEntity(HttpStatus.OK);
     }
+}
