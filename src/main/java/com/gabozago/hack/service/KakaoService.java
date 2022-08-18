@@ -1,6 +1,7 @@
 package com.gabozago.hack.service;
 
 
+import com.gabozago.hack.domain.Provider;
 import com.gabozago.hack.domain.User;
 import com.gabozago.hack.repository.place.UserRepo;
 import lombok.RequiredArgsConstructor;
@@ -37,7 +38,7 @@ public class KakaoService {
             StringBuilder sb = new StringBuilder();
             sb.append("grant_type=authorization_code");
             sb.append("&client_id=f59f1da1323e0e466c18bfdf8d2c67b2");
-            sb.append("&redirect_uri=http://13.125.213.188/auth/login/kakao/callback");
+            sb.append("&redirect_uri=http://13.125.213.188/auth/kakao/callback");
             sb.append("&code=" + code);
 
             bw.write(sb.toString());
@@ -162,14 +163,14 @@ public class KakaoService {
     }
 
     public void kakaoSignup(Map<String, Object> userInfo){
-        Long id = Long.parseLong((String) userInfo.get("id"));
+        String snsId = (String) userInfo.get("id");
         String name = (String) userInfo.get("nickname");
         String profile_image  = (String) userInfo.get("profile_image");
         String email = (String) userInfo.get("email");
 
 
-        if(userRepository.findById(id).equals(Optional.empty())){
-            userRepository.save(new User(id, name, profile_image, email));
+        if(userRepository.findBySnsId(snsId).equals(Optional.empty())){
+            userRepository.save(new User(snsId, name, profile_image, email, Provider.KAKAO));
         }
     }
 

@@ -1,5 +1,6 @@
 package com.gabozago.hack.config;
 
+import com.gabozago.hack.config.auth.CustomOAuth2UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -16,6 +17,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+    private final CustomOAuth2UserService customOAuth2UserService;
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
@@ -24,7 +26,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .httpBasic().disable()
                 .csrf().disable()
                 .authorizeRequests()
-                .anyRequest().permitAll();
+                .anyRequest().permitAll()
+                .and()  // 여기서부터 아래로 구글 로그인위해 주승우 추가
+                .logout()
+                .logoutSuccessUrl("/")
+                .and()
+                .oauth2Login()
+                .userInfoEndpoint()
+                .userService(customOAuth2UserService);;
 
     }
 
