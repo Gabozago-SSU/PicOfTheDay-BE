@@ -10,8 +10,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 public class HackApplication {
 
 	public static final String APPLICATION_LOCATIONS = "spring.config.location="
-			+ "classpath:application.properties,"
-			+ "classpath:aws.yml";
+			+ "classpath:application.properties";
 	public static void main(String[] args) {
 //		SpringApplication.run(HackApplication.class, args);
 		new SpringApplicationBuilder(HackApplication.class)

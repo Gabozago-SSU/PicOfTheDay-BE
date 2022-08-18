@@ -59,15 +59,15 @@ public class AuthController {
     /**
      * 구글 콜백
      */
-    @GetMapping("/google/callback")
-    @ResponseBody
-    public String googleCallback(@RequestParam(name="code") String code, Model model) throws IOException{
-        Long userId = authService.getUserIdByCode(code);
-        JSONObject json = new JSONObject();
-        json.put("userId", userId);
-
-        return json.toString();
-    }
+//    @GetMapping("/google/callback")
+//    @ResponseBody
+//    public String googleCallback(@RequestParam(name="code") String code, Model model) throws IOException{
+//        Long userId = authService.getUserIdByCode(code);
+//        JSONObject json = new JSONObject();
+//        json.put("userId", userId);
+//
+//        return json.toString();
+//    }
 
     /**
      * 로그아웃 - logout redirect url은 홈으로 설정해놓음. 바꿀거면 말해주기. 카카오 developments 사이트에서 바꿔야함
