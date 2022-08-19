@@ -38,7 +38,7 @@ public class KakaoService {
             StringBuilder sb = new StringBuilder();
             sb.append("grant_type=authorization_code");
             sb.append("&client_id=f59f1da1323e0e466c18bfdf8d2c67b2");
-            sb.append("&redirect_uri=https://port-0-picoftheday-be-5cw30n24l6yuwga9.gksl1.cloudtype.app/auth/kakao/callback");
+            sb.append("&redirect_uri=https://web-picoftheday-fe-5cw30n24l6yuwga9.gksl1.cloudtype.app/loading");
             sb.append("&code=" + code);
 
             bw.write(sb.toString());
