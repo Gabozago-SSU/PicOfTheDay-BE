@@ -55,7 +55,7 @@ public class AuthController {
 
         JSONObject json = new JSONObject();
         json.put("isRegistered", isRegistered);
-        json.put("userId", userInfo.get("id"));
+        json.put("userId", id);
 
         return json.toString();
     }
