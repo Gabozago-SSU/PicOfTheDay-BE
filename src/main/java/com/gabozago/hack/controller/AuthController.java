@@ -45,8 +45,8 @@ public class AuthController {
      */
     @PostMapping("/kakao")
     @ResponseBody
-    public String kakaoCallback(@RequestBody String code, Model model) throws IOException {
-        String access_token = kakaoService.getToken(code);
+    public String kakaoCallback(@RequestBody Map<String, String> code) throws IOException {
+        String access_token = kakaoService.getToken(code.get("code"));
         Map<String, Object> userInfo = kakaoService.getUserInfo(access_token);
         Boolean isRegistered = kakaoService.kakaoSignup(userInfo);
 
