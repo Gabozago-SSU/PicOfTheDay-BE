@@ -96,6 +96,7 @@ public class MypageService {
             ReviewLikeDto reviewLikeDto = ReviewLikeDto.builder()
                     .userId(user.getId())
                     .reviewId(reviewLike.getReview().getId())
+                    .image(reviewLike.getReview().getImages().get(0).getImage())
                     .build();
 
             userInfoDto.getUserReviewLikes().add(reviewLikeDto);
