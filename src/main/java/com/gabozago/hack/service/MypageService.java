@@ -34,14 +34,53 @@ public class MypageService {
                 .build();
 
         List<Review> reviews = user.getReviews();
-        for(Review review : reviews){
-            UserReviewDto userReviewDto = UserReviewDto.builder()
+        if(reviews.size() != 0){
+            for(Review review : reviews) {
+                UserReviewDto userReviewDto = UserReviewDto.builder()
+                        .userId(user.getId())
+                        .reviewId(review.getId())
+                        .reviewImage(review.getImages().get(0).getImage())
+                        .build();
+
+                userInfoDto.getUserReviews().add(userReviewDto);
+            }
+        }
+
+        for(ReviewLike reviewLike : user.getReviewLikes()){
+            ReviewLikeDto reviewLikeDto = ReviewLikeDto.builder()
                     .userId(user.getId())
-                    .reviewId(review.getId())
-                    .reviewImage(review.getImages().get(0).getImage())
+                    .reviewId(reviewLike.getReview().getId())
                     .build();
 
-            userInfoDto.getUserReviews().add(userReviewDto);
+            userInfoDto.getUserReviewLikes().add(reviewLikeDto);
+        }
+
+        return userInfoDto;
+    }
+
+    public UserInfoDto getMyPage(String userId){
+        User user = userRepo.findById(Long.parseLong(userId))
+                .orElseThrow(() -> new IllegalStateException("그런 유저 없음"));
+
+        UserInfoDto userInfoDto = UserInfoDto.builder()
+                .userId(user.getId())
+                .profileImage(user.getProfileImage())
+                .name(user.getName())
+                .mileage(user.getMileage())
+                .build();
+
+        List<Review> reviews = user.getReviews();
+
+        if(reviews.size() != 0){
+            for(Review review : reviews) {
+                UserReviewDto userReviewDto = UserReviewDto.builder()
+                        .userId(user.getId())
+                        .reviewId(review.getId())
+                        .reviewImage(review.getImages().get(0).getImage())
+                        .build();
+
+                userInfoDto.getUserReviews().add(userReviewDto);
+            }
         }
 
 
