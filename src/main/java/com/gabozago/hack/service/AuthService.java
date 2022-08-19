@@ -137,9 +137,9 @@ public class AuthService {
 
         String logoutUrl;
         if(user.getProvider() == Provider.GOOGLE){
-            logoutUrl = "http://13.125.213.188/logout";
+            logoutUrl = "https://port-0-picoftheday-be-5cw30n24l6yuwga9.gksl1.cloudtype.app/logout";
         }else{
-            logoutUrl = "https://kauth.kakao.com/oauth/logout?client_id=f59f1da1323e0e466c18bfdf8d2c67b2&logout_redirect_uri=http://13.125.213.188/";
+            logoutUrl = "https://kauth.kakao.com/oauth/logout?client_id=f59f1da1323e0e466c18bfdf8d2c67b2&logout_redirect_uri=https://web-picoftheday-fe-5cw30n24l6yuwga9.gksl1.cloudtype.app/";
         }
 
         return logoutUrl;
