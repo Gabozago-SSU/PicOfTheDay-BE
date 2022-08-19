@@ -178,5 +178,11 @@ public class KakaoService {
         return isRegistered;
     }
 
+    public Long getIdBySnsId(String snsId){
+        User user = userRepository.findBySnsId(snsId)
+                .orElseThrow(() -> new IllegalStateException("그런 유저 없음"));
+        return user.getId();
+    }
+
 }
 

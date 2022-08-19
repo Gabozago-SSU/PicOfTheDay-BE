@@ -51,6 +51,8 @@ public class AuthController {
         Map<String, Object> userInfo = kakaoService.getUserInfo(access_token);
         Boolean isRegistered = kakaoService.kakaoSignup(userInfo);
 
+        Long id = kakaoService.getIdBySnsId((String) userInfo.get("id"));
+
         JSONObject json = new JSONObject();
         json.put("isRegistered", isRegistered);
         json.put("userId", userInfo.get("id"));
