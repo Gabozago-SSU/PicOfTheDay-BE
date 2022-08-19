@@ -39,8 +39,12 @@ public class MypageService {
                 UserReviewDto userReviewDto = UserReviewDto.builder()
                         .userId(user.getId())
                         .reviewId(review.getId())
-                        .reviewImage(review.getImages().get(0).getImage())
+//                        .reviewImage(review.getImages().get(0).getImage())
                         .build();
+
+                if(review.getImages().size() != 0){
+                    userReviewDto.setReviewImage(review.getImages().get(0).getImage());
+                }
 
                 userInfoDto.getUserReviews().add(userReviewDto);
             }
@@ -76,8 +80,12 @@ public class MypageService {
                 UserReviewDto userReviewDto = UserReviewDto.builder()
                         .userId(user.getId())
                         .reviewId(review.getId())
-                        .reviewImage(review.getImages().get(0).getImage())
+//                        .reviewImage(review.getImages().get(0).getImage())
                         .build();
+
+                if(review.getImages().size() != 0){
+                    userReviewDto.setReviewImage(review.getImages().get(0).getImage());
+                }
 
                 userInfoDto.getUserReviews().add(userReviewDto);
             }

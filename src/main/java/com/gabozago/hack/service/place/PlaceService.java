@@ -240,10 +240,14 @@ public class PlaceService {
             PlaceSimilarDto placeSimilarDto = PlaceSimilarDto.builder()
                     .place_id(place.getId())
                     .category(place.getCategory())
-                    .image(place.getImages().get(0).getImage())
+//                    .image(place.getImages().get(0).getImage())
                     .title(place.getName())
                     .rate(place.getRate())
                     .build();
+
+            if(place.getImages().size() != 0){
+                placeSimilarDto.setImage(place.getImages().get(0).getImage());
+            }
 
             placeSimilarDtos.add(placeSimilarDto);
         }

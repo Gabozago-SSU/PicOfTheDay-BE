@@ -59,10 +59,14 @@ public class HomeService {
                         .placeId(place.getId())
                         .rate(place.getRate())
                         .category(place.getCategory())
-                        .image(place.getImages().get(0).getImage())
+//                        .image(place.getImages().get(0).getImage())
                         .title(place.getName())
                         .reviewId(null)
                         .build();
+
+                if(place.getImages().size() != 0){
+                    placeDto.setImage(place.getImages().get(0).getImage());
+                }
 
                 if(curationDto.getId() == place.getCuration().getId()){
                     curationDto.getPlaces().add(placeDto);
@@ -74,11 +78,14 @@ public class HomeService {
                         .placeId(null)
                         .rate(review.getRate())
                         .category(null)
-                        .image(review.getImages().get(0).getImage())
+//                        .image(review.getImages().get(0).getImage())
                         .title(null)
                         .reviewId(review.getId())
                         .build();
 
+                if(review.getImages().size() != 0){
+                    placeDto.setImage(review.getImages().get(0).getImage());
+                }
 
                 if(curationDto.getId() == review.getCuration().getId()){
                     curationDto.getPlaces().add(placeDto);
@@ -133,11 +140,15 @@ public class HomeService {
 
             PlaceSimilarDto placeSimilarDto = PlaceSimilarDto.builder()
                     .place_id(place.getId())
-                    .image(place.getImages().get(0).getImage())
+//                    .image(place.getImages().get(0).getImage())
                     .rate(place.getRate())
                     .category(place.getCategory())
                     .title(place.getName())
                     .build();
+
+            if(place.getImages().size() != 0){
+                placeSimilarDto.setImage(place.getImages().get(0).getImage());
+            }
 
             placeRecKeywordDto.getSimilarDtos().add(placeSimilarDto);
         }
