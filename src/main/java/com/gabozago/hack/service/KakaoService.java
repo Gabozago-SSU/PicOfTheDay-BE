@@ -162,16 +162,20 @@ public class KakaoService {
         return result;
     }
 
-    public void kakaoSignup(Map<String, Object> userInfo){
+    public Boolean kakaoSignup(Map<String, Object> userInfo){
         String snsId = (String) userInfo.get("id");
         String name = (String) userInfo.get("nickname");
         String profile_image  = (String) userInfo.get("profile_image");
         String email = (String) userInfo.get("email");
 
+        Boolean isRegistered = Boolean.TRUE;
 
         if(userRepository.findBySnsId(snsId).equals(Optional.empty())){
+            isRegistered = Boolean.FALSE;
             userRepository.save(new User(snsId, name, profile_image, email, Provider.KAKAO));
         }
+
+        return isRegistered;
     }
 
 }

@@ -35,22 +35,23 @@ public class AuthController {
     /**
      * 카카오 로그인 요청
      */
-    @GetMapping("/kakao")
-    public void kakaoLogin(HttpServletResponse httpServletResponse) throws IOException{
-        httpServletResponse.sendRedirect("https://kauth.kakao.com/oauth/authorize?client_id=f59f1da1323e0e466c18bfdf8d2c67b2&redirect_uri=https://port-0-picoftheday-be-5cw30n24l6yuwga9.gksl1.cloudtype.app/auth/kakao/callback&response_type=code");
-    }
+//    @GetMapping("/kakao")
+//    public void kakaoLogin(HttpServletResponse httpServletResponse) throws IOException{
+//        httpServletResponse.sendRedirect("https://kauth.kakao.com/oauth/authorize?client_id=f59f1da1323e0e466c18bfdf8d2c67b2&redirect_uri=https://port-0-picoftheday-be-5cw30n24l6yuwga9.gksl1.cloudtype.app/auth/kakao/callback&response_type=code");
+//    }
 
     /**
      * 카카오 로그인 이후 콜백
      */
-    @GetMapping("/kakao/callback")
+    @PostMapping("/kakao")
     @ResponseBody
-    public String kakaoCallback(@RequestParam String code, Model model) throws IOException {
+    public String kakaoCallback(@RequestBody String code, Model model) throws IOException {
         String access_token = kakaoService.getToken(code);
         Map<String, Object> userInfo = kakaoService.getUserInfo(access_token);
-        kakaoService.kakaoSignup(userInfo);
+        Boolean isRegistered = kakaoService.kakaoSignup(userInfo);
 
         JSONObject json = new JSONObject();
+        json.put("isRegistered", isRegistered);
         json.put("userId", userInfo.get("id"));
 
         return json.toString();
