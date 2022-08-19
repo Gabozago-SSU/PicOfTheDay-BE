@@ -50,6 +50,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         config.setAllowCredentials(true);
         config.addAllowedOrigin("http://localhost:3000");
         config.addAllowedOrigin("https://web-picoftheday-fe-5cw30n24l6yuwga9.gksl1.cloudtype.app");
+        config.addAllowedOrigin("https://accounts.kakao.com");
+        config.addAllowedOrigin("https://kauth.kakao.com");
         config.addAllowedMethod("*");
         config.addAllowedHeader("*");
         config.setMaxAge(3600L);
