@@ -37,7 +37,7 @@ public class AuthController {
      */
     @GetMapping("/kakao")
     public void kakaoLogin(HttpServletResponse httpServletResponse) throws IOException{
-        httpServletResponse.sendRedirect("https://kauth.kakao.com/oauth/authorize?client_id=f59f1da1323e0e466c18bfdf8d2c67b2&redirect_uri=http://13.125.213.188/auth/kakao/callback&response_type=code");
+        httpServletResponse.sendRedirect("https://kauth.kakao.com/oauth/authorize?client_id=f59f1da1323e0e466c18bfdf8d2c67b2&redirect_uri=https://port-0-picoftheday-be-5cw30n24l6yuwga9.gksl1.cloudtype.app/auth/kakao/callback&response_type=code");
     }
 
     /**
@@ -59,15 +59,15 @@ public class AuthController {
     /**
      * 구글 콜백
      */
-//    @GetMapping("/google/callback")
-//    @ResponseBody
-//    public String googleCallback(@RequestParam(name="code") String code, Model model) throws IOException{
-//        Long userId = authService.getUserIdByCode(code);
-//        JSONObject json = new JSONObject();
-//        json.put("userId", userId);
-//
-//        return json.toString();
-//    }
+    @GetMapping("/google/callback")
+    @ResponseBody
+    public String googleCallback(@RequestParam(name="code") String code, Model model) throws IOException{
+        Long userId = authService.getUserIdByCode(code);
+        JSONObject json = new JSONObject();
+        json.put("userId", userId);
+
+        return json.toString();
+    }
 
     /**
      * 로그아웃 - logout redirect url은 홈으로 설정해놓음. 바꿀거면 말해주기. 카카오 developments 사이트에서 바꿔야함
