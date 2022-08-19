@@ -32,9 +32,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .logout()
                 .logoutSuccessUrl("/")
                 .and()
-                .headers()
-                .addHeaderWriter(new XFrameOptionsHeaderWriter(XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN))
-                .and()
                 .oauth2Login()
                 .userInfoEndpoint()
                 .userService(customOAuth2UserService);
