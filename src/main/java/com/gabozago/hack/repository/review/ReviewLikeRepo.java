@@ -6,10 +6,13 @@ import com.gabozago.hack.domain.review.ReviewLike;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
 public interface ReviewLikeRepo extends JpaRepository<ReviewLike, Long> {
     Optional<ReviewLike> findByUserAndReview(User user, Review review);
+
+    Optional<List<ReviewLike>> findByUser(User User);
 
 }
