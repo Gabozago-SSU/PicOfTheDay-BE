@@ -14,4 +14,5 @@ public interface PlaceRepo extends JpaRepository<Place, Long> {
     Optional<List<Place>> findByNameContaining(String name);
 
     Optional<Place> findByName(String name);
+
 }

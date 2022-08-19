@@ -3,14 +3,17 @@ package com.gabozago.hack.service;
 import com.gabozago.hack.domain.home.Banner;
 import com.gabozago.hack.domain.home.Curation;
 import com.gabozago.hack.domain.place.Place;
+import com.gabozago.hack.domain.place.PlaceConKeyword;
 import com.gabozago.hack.domain.place.PlaceKeyword;
 import com.gabozago.hack.domain.review.Review;
 import com.gabozago.hack.dto.CurationDto;
 import com.gabozago.hack.dto.CurationPlaceDto;
 import com.gabozago.hack.dto.KeywordDto;
 import com.gabozago.hack.dto.place.PlaceKeywordDto;
+import com.gabozago.hack.dto.place.PlaceSimilarDto;
 import com.gabozago.hack.repository.BannerRepository;
 import com.gabozago.hack.repository.place.CurationRepo;
+import com.gabozago.hack.repository.place.PlaceConKeywordRepo;
 import com.gabozago.hack.repository.place.PlaceKeywordRepo;
 import com.gabozago.hack.repository.place.PlaceRepo;
 import com.gabozago.hack.repository.review.ReviewRepo;
@@ -31,6 +34,7 @@ public class HomeService {
     private final PlaceRepo placeRepo;
     private final ReviewRepo reviewRepo;
     private final PlaceKeywordRepo placeKeywordRepo;
+    private final PlaceConKeywordRepo placeConKeywordRepo;
 
     public List<Banner> getBanner(){
         return bannerRepository.findAll();
@@ -107,7 +111,30 @@ public class HomeService {
     }
 
 
-//    public ResponseEntity sendKeyword(String keyword) {
-//        List<Place> places = placeRepo.findb
-//    }
+    public List<PlaceSimilarDto> sendKeyword(String keyword) {
+        String setPlaceKeyword = "#" + keyword;
+        List<PlaceKeyword> places = placeKeywordRepo.findByKeyword(setPlaceKeyword)
+                .orElseThrow(() -> new IllegalStateException("해당 키워드 장소 없음"));
+        List<PlaceSimilarDto> placeSimilarDtos = new ArrayList<>();
+
+
+        for(PlaceKeyword placeKeyword : places){
+            PlaceConKeyword placeConKeyword = placeConKeywordRepo.findByPlaceKeyword(placeKeyword);
+            Place place = placeRepo.findById(placeConKeyword.getPlace().getId())
+                    .orElseThrow(() -> new IllegalStateException("그런 장소 없음"));
+
+            PlaceSimilarDto placeSimilarDto = PlaceSimilarDto.builder()
+                    .place_id(place.getId())
+                    .image(place.getImages().get(0).getImage())
+                    .rate(place.getRate())
+                    .category(place.getCategory())
+                    .title(place.getName())
+                    .build();
+
+            placeSimilarDtos.add(placeSimilarDto);
+        }
+
+        return placeSimilarDtos;
+
+    }
 }

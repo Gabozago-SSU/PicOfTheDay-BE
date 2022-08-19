@@ -12,6 +12,6 @@ import java.util.Optional;
 public interface PlaceKeywordRepo extends JpaRepository<PlaceKeyword, Long> {
     Optional<List<PlaceKeyword>> findByKeywordContaining(String keyword);
 
-    @Query(value = "SELECT * FROM placekeyword order by RAND() limit 5",nativeQuery = true)
-    List<PlaceKeyword> findAll();
+    Optional<List<PlaceKeyword>> findByKeyword(String keyword);
+
 }
