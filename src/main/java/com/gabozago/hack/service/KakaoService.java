@@ -112,12 +112,12 @@ public class KakaoService {
             String id = obj.get("id").toString();
             String nickname = properties.get("nickname").toString();
             String profile_image = properties.get("thumbnail_image").toString();
-            String email = kakao_account.get("email").toString();
+//            String email = kakao_account.get("email").toString();
 
             result.put("id", id);
             result.put("nickname", nickname);
             result.put("profile_image", profile_image);
-            result.put("email", email);
+//            result.put("email", email);
 
             br.close();
 
