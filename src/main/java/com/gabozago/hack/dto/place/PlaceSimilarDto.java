@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Data
 public class PlaceSimilarDto {
@@ -12,6 +13,7 @@ public class PlaceSimilarDto {
     private String title;
     private String image;
     private BigDecimal rate;
+
 
     @Builder
     public PlaceSimilarDto(Long place_id, String category, String title,

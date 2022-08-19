@@ -7,6 +7,7 @@ import com.gabozago.hack.dto.CurationDto;
 import com.gabozago.hack.dto.KeywordDto;
 import com.gabozago.hack.dto.feed.FeedPlaceSearchDto;
 import com.gabozago.hack.dto.place.PlaceKeywordDto;
+import com.gabozago.hack.dto.place.PlaceRecKeywordDto;
 import com.gabozago.hack.dto.place.PlaceSearchDto;
 import com.gabozago.hack.dto.place.PlaceSimilarDto;
 import com.gabozago.hack.service.HomeService;
@@ -44,7 +45,7 @@ public class HomeController {
     }
 
     @GetMapping("/search/keyword/keyword")
-    public List<PlaceSimilarDto> getPlaceKeywordAndInfo(@RequestParam(name = "keyword") String keyword) {
+    public PlaceRecKeywordDto getPlaceKeywordAndInfo(@RequestParam(name = "keyword") String keyword) {
         return homeService.sendKeyword(keyword);
     }
 

@@ -10,6 +10,7 @@ import com.gabozago.hack.dto.CurationDto;
 import com.gabozago.hack.dto.CurationPlaceDto;
 import com.gabozago.hack.dto.KeywordDto;
 import com.gabozago.hack.dto.place.PlaceKeywordDto;
+import com.gabozago.hack.dto.place.PlaceRecKeywordDto;
 import com.gabozago.hack.dto.place.PlaceSimilarDto;
 import com.gabozago.hack.repository.BannerRepository;
 import com.gabozago.hack.repository.place.CurationRepo;
@@ -111,11 +112,18 @@ public class HomeService {
     }
 
 
-    public List<PlaceSimilarDto> sendKeyword(String keyword) {
+    public PlaceRecKeywordDto sendKeyword(String keyword) {
         String setPlaceKeyword = "#" + keyword;
         List<PlaceKeyword> places = placeKeywordRepo.findByKeyword(setPlaceKeyword)
                 .orElseThrow(() -> new IllegalStateException("해당 키워드 장소 없음"));
-        List<PlaceSimilarDto> placeSimilarDtos = new ArrayList<>();
+        List<PlaceKeyword> recKeyword = placeKeywordRepo.findAll();
+        PlaceRecKeywordDto placeRecKeywordDto = new PlaceRecKeywordDto();
+
+        int randInt[] = new int[5];
+        for(int i = 0; i < randInt.length; i++){
+            randInt[i] = (int) (Math.random() * recKeyword.size()) + 1;
+            placeRecKeywordDto.getKeywords().add(recKeyword.get(randInt[i]-1).getKeyword());
+        }
 
 
         for(PlaceKeyword placeKeyword : places){
@@ -131,10 +139,10 @@ public class HomeService {
                     .title(place.getName())
                     .build();
 
-            placeSimilarDtos.add(placeSimilarDto);
+            placeRecKeywordDto.getSimilarDtos().add(placeSimilarDto);
         }
 
-        return placeSimilarDtos;
+        return placeRecKeywordDto;
 
     }
 }
