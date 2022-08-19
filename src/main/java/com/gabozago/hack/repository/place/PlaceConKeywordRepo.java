@@ -12,5 +12,5 @@ import java.util.List;
 public interface PlaceConKeywordRepo extends JpaRepository<PlaceConKeyword,Long> {
     List<PlaceConKeyword> findByPlace(Place place);
 
-    PlaceConKeyword findByPlaceKeyword(PlaceKeyword placeKeyword);
+    List<PlaceConKeyword> findByPlaceKeyword(PlaceKeyword placeKeyword);
 }

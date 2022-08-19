@@ -14,7 +14,9 @@ public class PlaceSimilarDto {
     private String image;
     private BigDecimal rate;
 
+    public PlaceSimilarDto(){
 
+    }
     @Builder
     public PlaceSimilarDto(Long place_id, String category, String title,
                            String image, BigDecimal rate){

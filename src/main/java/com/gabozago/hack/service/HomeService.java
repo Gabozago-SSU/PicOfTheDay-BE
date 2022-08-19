@@ -134,23 +134,28 @@ public class HomeService {
 
 
         for(PlaceKeyword placeKeyword : places){
-            PlaceConKeyword placeConKeyword = placeConKeywordRepo.findByPlaceKeyword(placeKeyword);
-            Place place = placeRepo.findById(placeConKeyword.getPlace().getId())
-                    .orElseThrow(() -> new IllegalStateException("그런 장소 없음"));
+            List<PlaceConKeyword> placeConKeyword = placeConKeywordRepo.findByPlaceKeyword(placeKeyword);
+            PlaceSimilarDto placeSimilarDto = new PlaceSimilarDto();
 
-            PlaceSimilarDto placeSimilarDto = PlaceSimilarDto.builder()
-                    .place_id(place.getId())
+            for(PlaceConKeyword placeConKeyword1 : placeConKeyword) {
+                Place place = placeRepo.findById(placeConKeyword1.getPlace().getId())
+                        .orElseThrow(() -> new IllegalStateException("그런 장소 없음"));
+
+                placeSimilarDto = PlaceSimilarDto.builder()
+                        .place_id(place.getId())
 //                    .image(place.getImages().get(0).getImage())
-                    .rate(place.getRate())
-                    .category(place.getCategory())
-                    .title(place.getName())
-                    .build();
+                        .rate(place.getRate())
+                        .category(place.getCategory())
+                        .title(place.getName())
+                        .build();
 
-            if(place.getImages().size() != 0){
-                placeSimilarDto.setImage(place.getImages().get(0).getImage());
+                if(place.getImages().size() != 0){
+                    placeSimilarDto.setImage(place.getImages().get(0).getImage());
+                }
+
+                placeRecKeywordDto.getSimilarDtos().add(placeSimilarDto);
             }
 
-            placeRecKeywordDto.getSimilarDtos().add(placeSimilarDto);
         }
 
         return placeRecKeywordDto;
